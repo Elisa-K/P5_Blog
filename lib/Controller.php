@@ -2,11 +2,24 @@
 declare(strict_types=1);
 namespace Lib;
 
+use PDO;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
+	private ? PDO $dbConnect;
+	public function __construct()
+	{
+		$db = new Database();
+		$this->dbConnect = $db->getConnection();
+
+	}
+
+	public function getDatabase(): ? PDO
+	{
+		return $this->dbConnect;
+	}
 
 	public function view(string $path, array $datas = []): void
 	{

@@ -9,6 +9,7 @@ class HomeController extends Controller
 {
 	public function index(): void
 	{
+
 		$this->view('front_office/homepage.html.twig');
 	}
 }
