@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace Lib\Router;
 
-
-
 class Route
 {
 	private $path;
@@ -38,17 +36,15 @@ class Route
 		return '([^/]+)';
 	}
 
-	public function call(): mixed
+	public function call(): void
 	{
 		if (is_string($this->callable)) {
 			$params = explode('#', $this->callable);
 			$controller = "App\\Controllers\\" . $params[0];
 			$controller = new $controller();
-			return call_user_func_array([$controller, $params[1]], $this->matches);
-
+			call_user_func_array([$controller, $params[1]], $this->matches);
 		} else {
-			return call_user_func_array($this->callable, $this->matches);
+			call_user_func_array($this->callable, $this->matches);
 		}
 	}
-
 }
