@@ -12,4 +12,9 @@ class HomeController extends Controller
     {
         $this->view('front_office/homepage.html.twig');
     }
+
+    public function test(int $id): void
+    {
+        $this->view('front_office/homepage.html.twig');
+    }
 }

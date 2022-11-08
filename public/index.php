@@ -2,17 +2,22 @@
 
 
 use Lib\Router\Router;
+use App\Controllers\ErrorController;
 use Symfony\Component\Dotenv\Dotenv;
 
-require_once("../vendor/autoload.php");
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__ . '/../.env');
+require_once "../vendor/autoload.php";
+// $dotenv = new Dotenv();
+// $dotenv->load(__DIR__ . '/../.env');
 
-$router = new Router($_GET['url']);
+$router = new Router(filter_input(INPUT_GET, 'url'));
 
 // Routes
 $router->get('/', "HomeController#index");
+$router->get('/:id', "HomeController#test");
 
-
-
-$router->run();
+try {
+	$router->run();
+} catch (TypeError $e) {
+	$errorController = new ErrorController();
+	$errorController->error404();
+}

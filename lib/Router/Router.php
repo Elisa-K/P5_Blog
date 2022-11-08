@@ -37,27 +37,13 @@ class Router
 
     public function run(): mixed
     {
-        if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
-            $this->error404();
-            throw new RouteNotFoundException('REQUEST_METHOD does not exist');
-        }
-        foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
-            if ($route->match($this->url)) {
-                try {
+        if (isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
+            foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+                if ($route->match($this->url)) {
                     return $route->call();
-                } catch (TypeError $e) {
-                    $this->error404();
-                    throw new TypeError("Error Param URL Type : " . $e->getMessage());
                 }
             }
         }
-        $this->error404();
         throw new RouteNotFoundException('No matching routes');
-    }
-
-    public function error404(): void
-    {
-        $controller = new \Lib\Controller();
-        $controller->view('404.html.twig');
     }
 }

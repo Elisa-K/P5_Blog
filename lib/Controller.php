@@ -10,14 +10,14 @@ use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
     public function __construct()
     {
         $db = new Database();
         $this->dbConnect = $db->getConnection();
     }
 
-    public function getDatabase(): ?PDO
+    public function getDatabase(): ? PDO
     {
         return $this->dbConnect;
     }
@@ -28,10 +28,9 @@ class Controller
         $twig = new Environment(
             $loader,
             [
-            'cache' => false,
-        ]
-        );
-        echo $twig->render($path, $datas);
-        return;
+                'cache' => false,
+            ]
+            );
+        print_r($twig->render($path, $datas));
     }
 }
