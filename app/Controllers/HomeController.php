@@ -13,8 +13,8 @@ class HomeController extends Controller
         $this->view('front_office/homepage.html.twig');
     }
 
-    public function test(int $id): void
+    public function dashboard(): void
     {
-        $this->view('front_office/homepage.html.twig');
+        $this->view('back_office/dashboard.html.twig');
     }
 }

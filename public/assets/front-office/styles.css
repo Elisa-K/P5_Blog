@@ -1,5 +1,6 @@
 :root {
   --green-light: #a1b986;
+  --green-dark: #536045;
   --rose-light: #fff3ee;
 }
 
@@ -132,7 +133,7 @@ h4::before {
 
 .navbar .navbar-brand {
   display: inline-block;
-  width: 120px;
+  width: 60px;
   margin-right: 100px;
 }
 
@@ -150,7 +151,7 @@ h4::before {
 .navbar li .nav-link:hover,
 .navbar li .active {
   font-weight: 900;
-  background-color: var(--green-light);
+  color: var(--green-light);
 }
 
 .navbar .navbar-toggler:focus,
@@ -163,9 +164,9 @@ h4::before {
 
 .right .nav-link-right {
   font-weight: 900;
-  color: black;
+  color: var(--green-dark);
   text-decoration: none;
-  padding: 15px 22px;
+  padding: 10px 15px;
   display: inline-block;
 }
 
@@ -175,7 +176,7 @@ h4::before {
 
 .btn-fill {
   text-decoration: none;
-  color: black;
+  color: var(--green-dark);
   background-color: var(--green-light);
   padding: 12px 22px;
   font-weight: 900;
@@ -184,7 +185,7 @@ h4::before {
 
 .btn-fill:hover {
   cursor: pointer;
-  color: black;
+  color: var(--green-dark);
   background-color: white;
   border: 2px solid var(--green-light);
 }
@@ -473,7 +474,7 @@ h4::before {
   top: 0;
   right: 0;
   font-weight: 900;
-  content: "</>";
+  content: '</>';
   color: var(--green-light);
   font-size: 3em;
   z-index: -1;
@@ -497,7 +498,7 @@ ul.list-in-text li {
 ul.list-in-text li:before {
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
-  content: "\f0c8";
+  content: '\f0c8';
   color: var(--green-light);
   padding-right: 10px;
   font-size: 0.8em;
@@ -715,13 +716,17 @@ footer .footer-wrap .social-media a img:hover {
   transform: scale(1.1);
 }
 
-footer .footer-wrap .company a:hover,
+footer .footer-wrap .nav-footer a:hover,
 footer .footer-wrap .useful-links a:hover {
   color: black;
   font-weight: 600;
 }
 
-footer .footer-wrap .company p,
+footer .nav-footer {
+  text-align: right;
+}
+
+footer .footer-wrap .nav-footer p,
 footer .footer-wrap .useful-links p {
   margin-bottom: 0.3em;
 }
@@ -733,7 +738,7 @@ footer .footer-wrap .newsletter #subscribe label {
 footer .footer-wrap .newsletter #subscribe input {
   display: block;
   width: 100%;
-  background-image: url("../img/icon/email-icon.svg");
+  background-image: url('../img/icon/email-icon.svg');
   background-repeat: no-repeat;
   background-size: 20px;
   background-position: 10px center;

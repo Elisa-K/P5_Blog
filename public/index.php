@@ -12,12 +12,15 @@ require_once "../vendor/autoload.php";
 $router = new Router(filter_input(INPUT_GET, 'url'));
 
 // Routes
+    // Front-Office
 $router->get('/', "HomeController#index");
-$router->get('/:id', "HomeController#test");
+
+    // Back-Office (admin)
+$router->get('/dashboard', "HomeController#dashboard");
 
 try {
-	$router->run();
+    $router->run();
 } catch (TypeError $e) {
-	$errorController = new ErrorController();
-	$errorController->error404();
+    $errorController = new ErrorController();
+    $errorController->error404();
 }

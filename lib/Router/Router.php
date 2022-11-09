@@ -44,6 +44,7 @@ class Router
                 }
             }
         }
-        throw new RouteNotFoundException('No matching routes');
+
+        // throw new RouteNotFoundException('No matching routes');
     }
 }
