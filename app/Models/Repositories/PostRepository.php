@@ -18,7 +18,7 @@ class PostRepository
 	public function getAllPosts(int $start, int $nbPostPage): array
 	{
 
-		$stmt = $this->dbConnect->query("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y') as french_updated_at FROM post INNER JOIN user on user.id=post.user_id ORDER BY post.createdAt DESC LIMIT $start, $nbPostPage");
+		$stmt = $this->dbConnect->query("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y à %Hh%i') as french_updated_at FROM post INNER JOIN user on user.id=post.user_id ORDER BY post.createdAt DESC LIMIT $start, $nbPostPage");
 
 		$posts = [];
 		while ($row = $stmt->fetch()) {

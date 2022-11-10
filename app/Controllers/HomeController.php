@@ -13,8 +13,4 @@ class HomeController extends Controller
         $this->view('front_office/homepage.html.twig', ['route' => '/']);
     }
 
-    public function dashboard(): void
-    {
-        $this->view('back_office/dashboard.html.twig', ['route' => '/dashboard']);
-    }
 }

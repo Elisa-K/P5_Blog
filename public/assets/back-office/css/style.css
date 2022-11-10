@@ -2565,16 +2565,16 @@ Buttons
 
 .btn-themecolor,
 .btn-themecolor.disabled {
-  background: #20aee3;
-  color: #ffffff;
-  border: 1px solid #20aee3;
+  background: #a1b986;
+  color: #a1b986;
+  border: 1px solid #a1b986;
 }
 
 .btn-themecolor:hover,
 .btn-themecolor.disabled:hover {
-  background: #20aee3;
+  background: #a1b986;
   opacity: 0.7;
-  border: 1px solid #20aee3;
+  border: 1px solid #a1b986;
 }
 
 .btn-themecolor.active,
@@ -2583,7 +2583,7 @@ Buttons
 .btn-themecolor.disabled.active,
 .btn-themecolor.disabled:active,
 .btn-themecolor.disabled:focus {
-  background: #028ee1;
+  background: #a1b986;
 }
 
 .btn-success,

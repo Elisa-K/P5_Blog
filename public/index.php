@@ -14,10 +14,12 @@ $router = new Router(filter_input(INPUT_GET, 'url'));
 // Routes
 // Front-Office
 $router->get('/', "HomeController#index");
-$router->get('/blog', "BlogController#allPost");
+$router->get('/blog', "BlogController#allPosts");
 
 // Back-Office (admin)
-$router->get('/dashboard', "HomeController#dashboard");
+$router->get('/dashboard', "BackOfficeController#dashboard");
+$router->get('/dashboard/posts', 'BackOfficeController#allPosts');
+
 
 try {
     $router->run();
