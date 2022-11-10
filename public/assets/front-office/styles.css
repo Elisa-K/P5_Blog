@@ -98,7 +98,7 @@ h2::before {
   display: block;
   width: 50%;
   height: 10px;
-  background-color: var(--green-light);
+  background-color: var(--rose-light);
   position: absolute;
   top: 0.7em;
   left: 16px;
@@ -109,7 +109,7 @@ h4::before {
   content: '';
   width: 50%;
   height: 6px;
-  background-color: var(--green-light);
+  background-color: var(--rose-light);
   position: absolute;
   top: 0.7em;
   left: 0;
@@ -516,7 +516,7 @@ ul.list-in-text li:before {
 
 .all-posts .post-item .post-img {
   width: 100%;
-  height: 350px;
+  height: auto;
   overflow: hidden;
 }
 
@@ -895,7 +895,7 @@ footer .footer-wrap .newsletter #subscribe button {
   }
 
   .all-posts .post-item .post-img {
-    min-width: 300px;
+    width: 300px;
     height: 300px;
     overflow: hidden;
     margin-right: 20px;

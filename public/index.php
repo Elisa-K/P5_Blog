@@ -12,10 +12,11 @@ require_once "../vendor/autoload.php";
 $router = new Router(filter_input(INPUT_GET, 'url'));
 
 // Routes
-    // Front-Office
+// Front-Office
 $router->get('/', "HomeController#index");
+$router->get('/blog', "BlogController#allPost");
 
-    // Back-Office (admin)
+// Back-Office (admin)
 $router->get('/dashboard', "HomeController#dashboard");
 
 try {

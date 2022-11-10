@@ -10,11 +10,11 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        $this->view('front_office/homepage.html.twig');
+        $this->view('front_office/homepage.html.twig', ['route' => '/']);
     }
 
     public function dashboard(): void
     {
-        $this->view('back_office/dashboard.html.twig');
+        $this->view('back_office/dashboard.html.twig', ['route' => '/dashboard']);
     }
 }

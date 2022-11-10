@@ -1,0 +1,59 @@
+{% extends 'front_office/layout.html.twig' %}
+
+{% block title %}
+	EK - Blog
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="main col-lg-12">
+			<div class="all-posts">
+				{% for post in posts %}
+					<div class="post-item">
+						<div class="post-img">
+							<img src="/public/assets/featured-img/{{post.featured_img }}" alt="">
+						</div>
+						<div class="post-main-info">
+							<h4>{{ post.title }}</h4>						
+							<div class="post-meta">
+								<span>
+									<i class="far fa-user"></i> {{ post.author }}
+								</span>
+								<span>
+									<i class="far fa-calendar"></i>
+									{{ post.created_at }}
+								</span>
+							</div>
+							<p>{{ post.excerpt }}</p>
+							<a href="/blog/post/{{post.id}}" class="btn-fill">Lire plus</a>
+						</div>
+					</div>			
+				{% endfor %}
+			</div>
+			<nav aria-label="blog navigation">
+                <ul class="pagination">
+					{% set nearbyPagesLimit = 4 %}
+                   	{% for i in 1..nbPage %}
+						{% if 0 == (actual_page - nearbyPagesLimit) - loop.index %}
+							<li class="page-item disabled">
+								<a href="#">...</a>
+							</li>
+						{% elseif 0 == (actual_page + nearbyPagesLimit) - loop.index %}
+							<li class="page-item disabled">
+								<a href="#">...</a>
+							</li>
+						{% elseif 0 < (actual_page - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                		{% elseif 0 > (actual_page + nearbyPagesLimit) - loop.index %} {# hide all after #}
+						{% else %}
+							<li class="page-item">
+								<a class="page-link {% if actual_page == loop.index %}active{% endif %}" href="/blog?page={{i}}">{{i}}</a>
+							</li>
+						{% endif %}
+				   	{% endfor %}
+                </ul>
+            </nav>
+		</div>	
+		
+	</div>
+
+{% endblock %}

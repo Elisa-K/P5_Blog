@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Lib;
 
+
 use PDO;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
     public function __construct()
     {
         $db = new Database();
         $this->dbConnect = $db->getConnection();
     }
 
-    public function getDatabase(): ?PDO
+    public function getDatabase(): ? PDO
     {
         return $this->dbConnect;
     }
@@ -30,7 +31,7 @@ class Controller
             [
                 'cache' => false,
             ]
-        );
+            );
         print_r($twig->render($path, $datas));
     }
 }
