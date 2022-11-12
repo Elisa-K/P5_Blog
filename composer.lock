@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78524d9d7ed83e470d920f2a4e77b189",
+    "content-hash": "0096ef462a7643dae9d2b0a864c4c5db",
     "packages": [
         {
             "name": "symfony/dotenv",
@@ -243,6 +243,101 @@
                 }
             ],
             "time": "2022-05-24T11:49:31+00:00"
+        },
+        {
+            "name": "tinymce/tinymce",
+            "version": "6.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinymce/tinymce-dist.git",
+                "reference": "396dc0d4c4a970918e5a4322c7957c90c85c4c4f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/396dc0d4c4a970918e5a4322c7957c90c85c4c4f",
+                "reference": "396dc0d4c4a970918e5a4322c7957c90c85c4c4f",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "tinymce.js",
+                        "plugins/*/plugin.js",
+                        "themes/*/theme.js",
+                        "models/*/model.js",
+                        "icons/*/icons.js"
+                    ],
+                    "files": [
+                        "tinymce.min.js",
+                        "plugins/*/plugin.min.js",
+                        "themes/*/theme.min.js",
+                        "models/*/model.min.js",
+                        "skins/**",
+                        "icons/*/icons.min.js"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT-only"
+            ],
+            "description": "Web based JavaScript HTML WYSIWYG editor control.",
+            "homepage": "https://www.tiny.cloud/",
+            "keywords": [
+                "contenteditable",
+                "editing",
+                "html",
+                "javascript",
+                "rich editor",
+                "rich text",
+                "rich text editor",
+                "richtext",
+                "rte",
+                "text",
+                "tinymce",
+                "wysiwyg"
+            ],
+            "support": {
+                "source": "https://github.com/tinymce/tinymce-dist/tree/6.2.0"
+            },
+            "time": "2022-09-08T04:15:30+00:00"
+        },
+        {
+            "name": "tweeb/tinymce-i18n",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tweeb/tinymce-i18n.git",
+                "reference": "058da08d6e61dc4e0279de6509bb6969a62f68e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tweeb/tinymce-i18n/zipball/058da08d6e61dc4e0279de6509bb6969a62f68e5",
+                "reference": "058da08d6e61dc4e0279de6509bb6969a62f68e5",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "TinyMCE Community"
+                }
+            ],
+            "description": "Languages for TinyMCE 6",
+            "homepage": "https://github.com/tweeb/tinymce-i18n",
+            "keywords": [
+                "i18n",
+                "languages",
+                "tinymce"
+            ],
+            "support": {
+                "source": "https://github.com/tweeb/tinymce-i18n/tree/2.0.4"
+            },
+            "time": "2022-04-12T13:16:56+00:00"
         },
         {
             "name": "twig/twig",

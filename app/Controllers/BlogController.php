@@ -25,4 +25,10 @@ class BlogController extends Controller
 		$this->view('front_office/blog.html.twig', ['route' => '/blog', 'posts' => $posts, 'nbPage' => $nbPage, 'actual_page' => $page]);
 	}
 
+	public function getPost(int $id): void
+	{
+		// $postRepositoy = new PostRepository($this->getDatabase());
+		$this->view('front_office/single_post.html.twig', ['route' => '/blog']);
+	}
+
 }

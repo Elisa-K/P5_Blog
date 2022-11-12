@@ -15,11 +15,13 @@ $router = new Router(filter_input(INPUT_GET, 'url'));
 // Front-Office
 $router->get('/', "HomeController#index");
 $router->get('/blog', "BlogController#allPosts");
+$router->get('/blog/post/:id', "BlogController#getPost");
 
 // Back-Office (admin)
 $router->get('/dashboard', "BackOfficeController#dashboard");
 $router->get('/dashboard/posts', 'BackOfficeController#allPosts');
-
+$router->get('/dashboard/newpost', 'BackOfficeController#newPostForm');
+$router->post('/dashboard/newpost/addpost', 'BackOfficeController#addPost');
 
 try {
     $router->run();

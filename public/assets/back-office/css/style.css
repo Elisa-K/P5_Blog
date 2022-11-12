@@ -3411,7 +3411,7 @@ Form Material page
 .form-material .form-control,
 .form-material .form-control.focus,
 .form-material .form-control:focus {
-  background-image: linear-gradient(#20aee3, #20aee3),
+  background-image: linear-gradient(#a1b986, #a1b986),
     linear-gradient(#e9edf2, #e9edf2);
   border: 0 none;
   border-radius: 0;

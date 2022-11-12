@@ -1,0 +1,36 @@
+{% extends 'front_office/layout.html.twig' %}
+
+{% block title %}
+	EK - Blog
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="main col-lg-12">
+			<div class="single-post">
+				<h2>POST TITRE</h2>
+				<div class="post-meta text-muted">
+					<span>
+						<i class="far fa-user"></i> 
+						Posted by someone
+					</span>
+					<span>
+						<i class="far fa-calendar"></i> 
+						30 07 2021
+					</span>
+					<span>
+						<i class="far fa-comment-alt"></i> 
+						0 comments
+					</span>
+				</div>
+				<div class="post-contant">
+					<div class="post-img">
+						<img src="/public/assets/featured-img/blog-post-1.jpg" alt="">
+					</div>
+					CONTENU DE L'ARTICLE
+				</div>
+			</div>
+		</div>		
+	</div>
+
+{% endblock %}

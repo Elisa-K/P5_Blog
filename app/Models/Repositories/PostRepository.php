@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Repositories;
 
 use PDO;
+use PDOException;
 use App\Models\Entities\Post;
 
 class PostRepository
@@ -44,4 +45,34 @@ class PostRepository
 		$nbPost = $row['nb_post'];
 		return $nbPost;
 	}
+
+	public function addPost(string $title, string $excerpt, string $featured_img, string $content): bool
+	{
+		try {
+			$stmt = $this->dbConnect->prepare("INSERT INTO post (title, excerpt, featuredImage, content, user_id, createdAt) VALUES(:title, :excerpt, :featuredImage, :content, :userId, NOW())");
+
+
+			$stmt->bindParam(':title', $title, PDO::PARAM_STR);
+			$stmt->bindParam(':excerpt', $excerpt, PDO::PARAM_STR);
+			$stmt->bindParam(':featuredImage', $featured_img, PDO::PARAM_STR);
+			$stmt->bindParam(':content', $content, PDO::PARAM_STR);
+			//TO DO : userId à modifier en fonction de l'utilisateur connecté et admin
+			$userId = 1;
+			$stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+			$affectedLines = $stmt->execute(
+				[
+					':title' => $title,
+					':excerpt' => $excerpt,
+					':featuredImage' => $featured_img,
+					':content' => $content,
+					':userId' => 1
+				]
+			);
+			return ($affectedLines > 0);
+		} catch (PDOException $e) {
+			var_dump($e->getMessage());
+		}
+
+	}
+
 }
