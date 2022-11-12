@@ -27,8 +27,9 @@ class BlogController extends Controller
 
 	public function getPost(int $id): void
 	{
-		// $postRepositoy = new PostRepository($this->getDatabase());
-		$this->view('front_office/single_post.html.twig', ['route' => '/blog']);
+		$postRepositoy = new PostRepository($this->getDatabase());
+		$post = $postRepositoy->getPostById($id);
+		$this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post]);
 	}
 
 }

@@ -38,6 +38,27 @@ class PostRepository
 		return $posts;
 	}
 
+	public function getPostById(int $id): Post
+	{
+		$stmt = $this->dbConnect->prepare("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y à %Hh%i') as french_updated_at FROM post INNER JOIN user on user.id=post.user_id WHERE post.id = ?");
+
+		$stmt->execute([$id]);
+
+		$row = $stmt->fetch();
+
+		$post = new Post();
+		$post->id = $row['id'];
+		$post->author = $row['username'];
+		$post->title = $row['title'];
+		$post->excerpt = $row['excerpt'];
+		$post->content = $row['content'];
+		$post->featured_img = $row['featuredImage'];
+		$post->created_at = $row['french_created_at'];
+		$post->updated_at = $row['french_updated_at'];
+
+		return $post;
+	}
+
 	public function getNbPosts(): int
 	{
 		$stmt = $this->dbConnect->query("SELECT count(id) as nb_post FROM post");
