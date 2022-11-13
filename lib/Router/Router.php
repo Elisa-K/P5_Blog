@@ -37,8 +37,8 @@ class Router
 
     public function run(): mixed
     {
-        if (isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
-            foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+        if (isset($this->routes[filter_input(INPUT_SERVER, 'REQUEST_METHOD')])) {
+            foreach ($this->routes[filter_input(INPUT_SERVER, 'REQUEST_METHOD')] as $route) {
                 if ($route->match($this->url)) {
                     return $route->call();
                 }

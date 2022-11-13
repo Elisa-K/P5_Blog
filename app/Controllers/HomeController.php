@@ -12,5 +12,4 @@ class HomeController extends Controller
     {
         $this->view('front_office/homepage.html.twig', ['route' => '/']);
     }
-
 }
