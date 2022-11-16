@@ -28,7 +28,7 @@
 					{% endif %}
 					<span>
 						<i class="far fa-comment-alt"></i> 
-						0 commentaires
+						{{ post.nb_comments }} {% if post.nb_comments > 1 %}commentaires{% else %}commentaire{% endif %}
 					</span>
 				</div>
 				<div class="post-contant">

@@ -20,8 +20,8 @@ $router->get('/blog/post/:id', "BlogController#getPost");
 // Back-Office (admin)
 $router->get('/dashboard', "BackOfficeController#dashboard");
 $router->get('/dashboard/posts', 'BackOfficeController#allPosts');
-$router->get('/dashboard/newpost', 'BackOfficeController#newPostForm');
-$router->post('/dashboard/newpost/addpost', 'BackOfficeController#addPost');
+$router->get('/dashboard/newpost', 'BackOfficeController#addPost');
+$router->post('/dashboard/newpost', 'BackOfficeController#addPost');
 
 try {
     $router->run();

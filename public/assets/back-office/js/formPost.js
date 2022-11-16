@@ -46,7 +46,7 @@ $(document).on('click', '#submit', chkSubmit);
 
 function chkSubmit() {
 
-	var msg = $('.tinymce').val();
+	var msg = tinymce.get("content-tiny").getContent();
 	
 	var textmsg = $.trim($(msg).text());
 	

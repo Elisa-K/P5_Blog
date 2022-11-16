@@ -14,4 +14,5 @@ class Post
     public string $featured_img;
     public string $created_at;
     public ?string $updated_at;
+    public int $nb_comments;
 }
