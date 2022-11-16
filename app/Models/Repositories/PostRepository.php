@@ -66,6 +66,14 @@ class PostRepository
         return $nbPost;
     }
 
+    public function getFeaturedImg(int $id): string
+    {
+        $stmt = $this->dbConnect->query("SELECT featuredImage FROM post WHERE id = $id");
+        $row = $stmt->fetch();
+        $featuredImg = $row['featuredImage'];
+        return $featuredImg;
+    }
+
     public function addPost(string $title, string $excerpt, string $featured_img, string $content, int $userId): bool
     {
         $stmt = $this->dbConnect->prepare("INSERT INTO post (title, excerpt, featuredImage, content, user_id, createdAt) VALUES(:title, :excerpt, :featuredImage, :content, :userId, NOW())");
@@ -77,6 +85,14 @@ class PostRepository
         $affectedLines = $stmt->execute();
 
         return ($affectedLines > 0);
+    }
 
+    public function deletePost(int $id): bool
+    {
+        $stmt = $this->dbConnect->prepare("DELETE FROM post WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $affectedLines = $stmt->execute();
+
+        return ($affectedLines > 0);
     }
 }

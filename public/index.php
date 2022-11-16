@@ -22,6 +22,7 @@ $router->get('/dashboard', "BackOfficeController#dashboard");
 $router->get('/dashboard/posts', 'BackOfficeController#allPosts');
 $router->get('/dashboard/newpost', 'BackOfficeController#addPost');
 $router->post('/dashboard/newpost', 'BackOfficeController#addPost');
+$router->get('/dashboard/deletepost/:id', 'BackOfficeController#deletePost');
 
 try {
     $router->run();

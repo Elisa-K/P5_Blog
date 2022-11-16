@@ -6,10 +6,14 @@ namespace Lib\Services;
 
 class FileManager
 {
+    private string $pathImg;
+
+    public function __construct()
+    {
+        $this->pathImg = "assets/featured-img/";
+    }
     public function saveImg(array $image): string|array
     {
-
-        $path = "assets/featured-img/";
         $fileType = $image['type'];
         $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
@@ -18,7 +22,7 @@ class FileManager
             if ($fileSize < 5 * 1024 * 1024) {
                 $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
                 $name = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 5) . '-' . time() . '.' . $extension;
-                if (move_uploaded_file($image['tmp_name'], $path . $name)) {
+                if (move_uploaded_file($image['tmp_name'], $this->pathImg . $name)) {
                     return $name;
                 } else {
                     return ['erreur' => "Une erreur s'est produite pendant l'enregistrement de l'image."];
@@ -31,5 +35,10 @@ class FileManager
             return ['erreur' => "L'extension de l'image n'est pas autorisée ! (acceptées : jpg, jpeg et png)"];
         }
 
+    }
+
+    public function deleteImg(string $name): bool
+    {
+        return unlink($this->pathImg . $name);
     }
 }

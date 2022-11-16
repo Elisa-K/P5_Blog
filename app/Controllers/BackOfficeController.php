@@ -73,4 +73,22 @@ class BackOfficeController extends Controller
         }
         $this->view('back_office/new_post.html.twig', $data);
     }
+
+    public function deletePost(int $id)
+    {
+        $postRepository = new PostRepository($this->getDatabase());
+        $featuredImg = $postRepository->getFeaturedImg($id);
+        if ($postRepository->deletePost($id)) {
+            $fileManager = new FileManager();
+            $fileManager->deleteImg($featuredImg);
+            // retour avec un message succés
+        } else {
+            // retour avec un message erreur
+        }
+        header('Location: /dashboard/posts');
+        exit();
+
+    }
+
+
 }
