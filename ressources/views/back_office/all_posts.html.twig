@@ -1,0 +1,54 @@
+{% extends 'back_office/layout.html.twig' %}
+
+{% block title %}
+  EK - Tous les articles
+{% endblock %}
+
+{% block content %}
+	<div class="row page-titles">
+        <div class="col-md-12 align-self-center">
+            <h3 class="text-themecolor">Tous les articles</h3>			
+        </div>
+        <div class="col-md-12 align-self-center mt-4">
+             <a href="/dashboard/newpost" class="btn waves-effect waves-light btn-themecolor text-white">Publier un article</a>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Auteur</th>
+									<th>Titre</th>
+									<th>Chapô</th>
+									<th>Créé le</th>
+									<th>Dernière modification le</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for post in posts %}
+									<tr>
+										<td>{{post.author}}</td>
+										<td>{{post.title}}</td>
+										<td>{{post.excerpt}}</td>
+										<td>{{post.created_at}}</td>
+										<td>{{post.updated_at}}</td>
+										<td>
+											<a href="/dashboard/updatepost/{{post.id}}" class="btn waves-effect waves-light btn-primary text-white">Modifier</a>
+											<a href="/dashboard/deletepost/{{post.id}}" class="btn waves-effect waves-light btn-danger text-white">Supprimer</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

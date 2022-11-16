@@ -18,26 +18,41 @@ File: scss
 /*******************
 /*Top bar
 *******************/
+:root {
+  --green-light: #a1b986;
+  --green-dark: #536045;
+  --rose-light: #fff3ee;
+}
+
 .topbar {
-  background: #ffffff; }
-  .topbar .navbar-header {
-    background: #ffffff; }
-  .topbar .top-navbar .navbar-header .navbar-brand .light-logo {
-    display: none;
-    color: rgba(0, 0, 0, 0.7); }
-  .topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
-    color: rgba(0, 0, 0, 0.7) !important; }
-    .topbar .navbar-light .navbar-nav .nav-item > a.nav-link:hover, .topbar .navbar-light .navbar-nav .nav-item > a.nav-link:focus {
-      color: black !important; }
+  background: #ffffff;
+}
+.topbar .navbar-header {
+  background: #ffffff;
+}
+.topbar .top-navbar .navbar-header .navbar-brand .light-logo {
+  display: none;
+  color: rgba(0, 0, 0, 0.7);
+}
+.topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+.topbar .navbar-light .navbar-nav .nav-item > a.nav-link:hover,
+.topbar .navbar-light .navbar-nav .nav-item > a.nav-link:focus {
+  color: black !important;
+}
 
 /*******************
 /*General Elements
 *******************/
-a.link:hover, a.link:focus {
-  color: #20aee3 !important; }
+a.link:hover,
+a.link:focus {
+  color: var(--green-dark) !important;
+}
 
 .bg-theme {
-  background-color: #20aee3 !important; }
+  background-color: var(--green-light) !important;
+}
 
 .pagination > .active > a,
 .pagination > .active > span,
@@ -45,61 +60,80 @@ a.link:hover, a.link:focus {
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
-  background-color: #20aee3;
-  border-color: #20aee3; }
+  background-color: var(--green-dark);
+  border-color: var(--green-dark);
+}
 
 .right-sidebar .rpanel-title {
-  background: #20aee3; }
+  background: var(--green-dark);
+}
 
-.stylish-table tbody tr:hover, .stylish-table tbody tr.active {
-  border-left: 4px solid #20aee3; }
+.stylish-table tbody tr:hover,
+.stylish-table tbody tr.active {
+  border-left: var(--green-dark);
+}
 
 .text-themecolor {
-  color: #20aee3 !important; }
+  color: var(--green-dark) !important;
+}
 
 .profile-tab li a.nav-link.active,
 .customtab li a.nav-link.active {
-  border-bottom: 2px solid #20aee3;
-  color: #20aee3; }
+  border-bottom: 2px solid var(--green-dark);
+  color: var(--green-dark);
+}
 
 .profile-tab li a.nav-link:hover,
 .customtab li a.nav-link:hover {
-  color: #20aee3; }
+  color: var(--green-dark);
+}
 
 /*******************
 /*Buttons
 *******************/
 .btn-themecolor,
 .btn-themecolor.disabled {
-  background: #20aee3;
+  background: var(--green-light);
   color: #ffffff;
-  border: 1px solid #20aee3; }
-  .btn-themecolor:hover,
-  .btn-themecolor.disabled:hover {
-    background: #20aee3;
-    opacity: 0.7;
-    border: 1px solid #20aee3; }
-  .btn-themecolor.active, .btn-themecolor:focus,
-  .btn-themecolor.disabled.active,
-  .btn-themecolor.disabled:focus {
-    background: #028ee1; }
+  border: 1px solid var(--green-light);
+}
+.btn-themecolor:hover,
+.btn-themecolor.disabled:hover {
+  background: var(--green-light);
+  opacity: 0.7;
+  border: 1px solid var(--green-light);
+}
+.btn-themecolor.active,
+.btn-themecolor:focus,
+.btn-themecolor.disabled.active,
+.btn-themecolor.disabled:focus {
+  background: var(--green-light);
+}
 
 /*******************
 /*sidebar navigation
 *******************/
 .label-themecolor {
-  background: #20aee3; }
+  background: var(--green-dark);
+}
 
 .sidebar-nav > ul > li.active > a {
-  color: #20aee3;
-  border-color: #20aee3; }
-  .sidebar-nav > ul > li.active > a i {
-    color: #20aee3; }
+  color: var(--green-light);
+  border-color: var(--green-light);
+}
+.sidebar-nav > ul > li.active > a svg {
+  color: var(--green-light);
+}
 
-.sidebar-nav ul li a.active, .sidebar-nav ul li a:hover {
-  color: #20aee3; }
-  .sidebar-nav ul li a.active i, .sidebar-nav ul li a:hover i {
-    color: #20aee3; }
+.sidebar-nav ul li a.active,
+.sidebar-nav ul li a:hover {
+  color: var(--green-light);
+}
+.sidebar-nav ul li a.active i,
+.sidebar-nav ul li a:hover svg {
+  color: var(--green-light);
+}
 
-.sidebar-nav > ul > li > a i {
-  color: #787f91; }
+.sidebar-nav > ul > li > a svg {
+  color: #787f91;
+}

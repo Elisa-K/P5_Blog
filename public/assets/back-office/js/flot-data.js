@@ -124,10 +124,11 @@ $(document).ready(function () {
         var plotObj = $.plot($("#flot-line-chart"), [{
             data: sin
             , label: "sin(x)"
-        , }, {
+            ,
+        }, {
             data: cos
             , label: "cos(x)"
-            }], options);
+        }], options);
     }
 });
 //Flot Pie Chart
@@ -136,19 +137,23 @@ $(function () {
         label: "Series 0"
         , data: 10
         , color: "#4f5467"
-    , }, {
+        ,
+    }, {
         label: "Series 1"
         , data: 1
         , color: "#26c6da"
-    , }, {
+        ,
+    }, {
         label: "Series 2"
         , data: 3
         , color: "#009efb"
-    , }, {
+        ,
+    }, {
         label: "Series 3"
         , data: 1
         , color: "#7460ee"
-    , }];
+        ,
+    }];
     var plotObj = $.plot($("#flot-pie-chart"), data, {
         series: {
             pie: {

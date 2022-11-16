@@ -1,0 +1,48 @@
+{% extends 'front_office/layout.html.twig' %}
+
+{% block title %}
+	EK - Blog
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css" integrity="sha512-/mZ1FHPkg6EKcxo0fKXF51ak6Cr2ocgDi5ytaTBjsQZIH/RNs6GF6+oId/vPe3eJB836T36nXwVh/WBl/cWT4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="main col-lg-12 col-xl-8 col-md-12 mx-auto">
+			<div class="single-post">
+				<h2>{{ post.title }}</h2>
+				<div class="post-meta text-muted">
+					<span>
+						<i class="far fa-user"></i> 
+						{{ post.author }}
+					</span>
+					<span>
+						<i class="far fa-calendar"></i> 
+						{{ post.created_at }}
+					</span>
+					{% if post.updated_at is not null %}
+					<span>
+						<i class="fa-solid fa-pen"></i>
+						{{ post.updated_at }}				
+					</span>
+					{% endif %}
+					<span>
+						<i class="far fa-comment-alt"></i> 
+						{{ post.nb_comments }} {% if post.nb_comments > 1 %}commentaires{% else %}commentaire{% endif %}
+					</span>
+				</div>
+				<div class="post-contant">
+					<div class="post-img">
+						<img src="/public/assets/featured-img/{{ post.featured_img }}" alt="{{ post.title }}">
+					</div>
+					{{ post.content | raw }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js" integrity="sha512-UOoJElONeUNzQbbKQbjldDf9MwOHqxNz49NNJJ1d90yp+X9edsHyJoAs6O4K19CZGaIdjI5ohK+O2y5lBTW6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}

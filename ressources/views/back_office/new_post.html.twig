@@ -1,0 +1,26 @@
+{% extends 'back_office/layout.html.twig' %}
+
+{% block title %}
+  EK - Nouvel article
+{% endblock %}
+{% block stylesheets %}
+	<script src="/vendor/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block content %}
+	<div class="row page-titles">
+		<div class="col-md-12 align-self-center">
+				<h3 class="text-themecolor text-center">Ajouter un nouvel article</h3>				
+		</div>		
+	</div>
+	{% include 'back_office/form_post.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/public/assets/back-office/js/formPost.js"></script>
+	{% if content is defined %}
+		<script>
+		setTimeout(() => {tinymce.get('content-tiny').setContent('{{ content | raw }}')},500);			
+		</script>
+	{% endif %}
+{% endblock %}
