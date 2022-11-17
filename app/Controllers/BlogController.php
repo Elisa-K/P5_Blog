@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use Lib\Controller;
 use App\Models\Repositories\PostRepository;
+use App\Models\Repositories\CommentRepository;
 
 class BlogController extends Controller
 {
@@ -27,8 +28,11 @@ class BlogController extends Controller
 
     public function getPost(int $id): void
     {
-        $postRepositoy = new PostRepository($this->getDatabase());
-        $post = $postRepositoy->getPostById($id);
-        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post]);
+        $postRepository = new PostRepository($this->getDatabase());
+        $post = $postRepository->getPostById($id);
+        $commentRepository = new CommentRepository($this->getDatabase());
+        $comments = $commentRepository->getCommentsByPostId($id);
+
+        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments]);
     }
 }

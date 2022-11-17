@@ -38,6 +38,38 @@
 					{{ post.content | raw }}
 				</div>
 			</div>
+			<hr>
+			{# Liste des commentaires #}
+			<div class="list-comments">
+				<h5 class="text-muted">
+					<i class="far fa-comment-alt"></i> 
+					{{ post.nb_comments }} {% if post.nb_comments > 1 %}commentaires{% else %}commentaire{% endif %}
+				</h5>
+				{% for comment in comments %}
+				<div class="d-flex flex-row comment-row">
+					<div class="p-2">
+						<img src="/public/assets/front-office/img/user.png" alt="user" width="35">
+					</div>
+					<div class="comment-text w-100">
+						<h6>{{ comment.author }}</h6>
+						<div class="comment-footer">
+							<span class="date text-muted">{{ comment.created_at }}</span>
+							<p>{{ comment.content }}</p>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{# TO DO : à n'afficher que si l'utilisateur est connecté #}
+			<form action="/addComment/:idPost" method="post" id="commentForm">
+				<div class="mb-3">
+					<label for="comment" class="form-label">Ecrire un commentaire</label>
+					<textarea class="form-control" name="comment" rows="5" required></textarea>
+				</div>
+				<div class="d-grid">
+          <button class="btn-fill" id="submitButton" type="submit">Envoyer le commentaire</button>
+        </div>
+			</form>
 		</div>
 	</div>
 
