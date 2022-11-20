@@ -61,10 +61,15 @@
 				{% endfor %}
 			</div>
 			{# TO DO : à n'afficher que si l'utilisateur est connecté #}
-			<form action="/addComment/:idPost" method="post" id="commentForm">
+			<form action="/blog/post/addComment/{{ post.id }}" method="post" id="commentForm">
 				<div class="mb-3">
 					<label for="comment" class="form-label">Ecrire un commentaire</label>
 					<textarea class="form-control" name="comment" rows="5" required></textarea>
+					{% if errorComment is defined %}
+							<div class="text-danger">
+								{{ errorComment }}
+							</div>
+							{% endif %}
 				</div>
 				<div class="d-grid">
           <button class="btn-fill" id="submitButton" type="submit">Envoyer le commentaire</button>

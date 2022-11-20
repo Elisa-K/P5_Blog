@@ -16,6 +16,7 @@ $router = new Router(filter_input(INPUT_GET, 'url'));
 $router->get('/', "HomeController#index");
 $router->get('/blog', "BlogController#allPosts");
 $router->get('/blog/post/:id', "BlogController#getPost");
+$router->post('/blog/post/addComment/:id', "BlogController#addComment");
 
 // Back-Office (admin)
 $router->get('/dashboard', "BackOfficeController#dashboard");
