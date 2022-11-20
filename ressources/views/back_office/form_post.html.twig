@@ -7,11 +7,11 @@
 	{% endif %}
 		<div class="card">
 			<div class="card-body">
-				<form action="/dashboard/newpost" method="post" enctype="multipart/form-data" class="form-horizontal form-material mx-2 was-validate">
+				<form action="/dashboard/{% if action == 'add' %}newpost{% elseif action == 'update' %}updatepost/{{post.id}}{% endif %}" method="post" enctype="multipart/form-data" class="form-horizontal form-material mx-2 was-validate">
 					<div class="form-group">
 						<label for="title" class="col-md-12">Titre</label>
 						<div class="col-md-12">
-							<input type="text" name="title" {% if title is defined %} value="{{ title }}" {% endif %} class="form-control form-control-line" maxlength="255" minlength="5" required>
+							<input type="text" name="title" {% if post.title is defined %} value="{{ post.title }}" {% endif %} class="form-control form-control-line" maxlength="255" minlength="5" required>
 							{% if errorTitle is defined %}
 							<div class="text-danger">
 								{{ errorTitle }}
@@ -22,7 +22,7 @@
 					<div class="form-group">
 						<label class="col-md-12" for="excerpt">Chapô</label>
 						<div class="col-md-12">
-							<textarea name="excerpt" rows="5" class="form-control form-control-line" required>{% if excerpt is defined %}{{ excerpt }}{% endif %}</textarea>
+							<textarea name="excerpt" rows="5" class="form-control form-control-line" required>{% if post.excerpt is defined %}{{ post.excerpt }}{% endif %}</textarea>
 							{% if errorExcerpt is defined %}
 							<div class="text-danger">
 								{{ errorExcerpt }}

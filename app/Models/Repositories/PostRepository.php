@@ -87,6 +87,19 @@ class PostRepository
         return ($affectedLines > 0);
     }
 
+    public function updatePost(int $id, string $title, string $excerpt, string $featured_img, string $content): bool
+    {
+        $stmt = $this->dbConnect->prepare("UPDATE post SET title=:title, excerpt=:excerpt, featuredImage=:featuredImage, content=:content, updateAt=NOW() WHERE id=:id");
+        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+        $stmt->bindParam(':excerpt', $excerpt, PDO::PARAM_STR);
+        $stmt->bindParam(':featuredImage', $featured_img, PDO::PARAM_STR);
+        $stmt->bindParam(':content', $content, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $affectedLines = $stmt->execute();
+
+        return ($affectedLines > 0);
+
+    }
     public function deletePost(int $id): bool
     {
         $stmt = $this->dbConnect->prepare("DELETE FROM post WHERE id = :id");
