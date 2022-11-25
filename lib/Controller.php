@@ -10,14 +10,14 @@ use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
     public function __construct()
     {
         $db = new Database();
         $this->dbConnect = $db->getConnection();
     }
 
-    public function getDatabase(): ?PDO
+    public function getDatabase(): ? PDO
     {
         return $this->dbConnect;
     }
@@ -28,9 +28,21 @@ class Controller
         $twig = new Environment(
             $loader,
             [
+                'debug' => true,
                 'cache' => false,
             ]
         );
+        $twig->addExtension(new \Twig\Extension\DebugExtension());
         print_r($twig->render($path, $datas));
+    }
+
+    public function isSubmit(): bool
+    {
+        return $_SERVER['REQUEST_METHOD'] == 'POST';
+    }
+
+    public function checkFormValidate()
+    {
+
     }
 }

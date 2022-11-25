@@ -7,7 +7,7 @@ namespace App\Controllers;
 use Lib\Controller;
 use App\Models\Entities\Post;
 use Lib\Services\FileManager;
-use Lib\Services\FormValidator;
+use Lib\Services\Form\EditPostForm;
 use App\Models\Repositories\PostRepository;
 
 class BackOfficeController extends Controller
@@ -37,93 +37,52 @@ class BackOfficeController extends Controller
     public function addPost(): void
     {
         // TO DO Vérifier utilisateur connecté et admin
-
-        $data = [];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $formValidator = new FormValidator();
-            $title = filter_input(INPUT_POST, 'title');
-            $title = trim($title);
-            $errorTitle = $formValidator->checkTextLength($title, "titre", 5, 255);
-            $excerpt = filter_input(INPUT_POST, 'excerpt');
-            $excerpt = trim($excerpt);
-            $errorExcerpt = $formValidator->checkTextLength($excerpt, "chapô", 5, null);
-            $content = filter_input(INPUT_POST, 'content');
-            $content = trim($content);
-            $errorContent = $formValidator->checkTextLength($content, "contenu de l'article", 25, null);
-            $post = new Post();
-            $post->title = $title;
-            $post->excerpt = $excerpt;
-            $post->content = $content;
-
-            if (!$errorTitle && !$errorExcerpt && !$errorContent) {
-                if ($_FILES['featured-img']['error'] == 0) {
-                    $fileManager = new FileManager();
-                    $featuredImg = $fileManager->saveImg($_FILES['featured-img']);
-                    if (is_array($featuredImg)) {
-                        $errorImg = $featuredImg['error'];
-                        $data = ['post' => $post, 'errorImg' => $errorImg];
-                    } else {
-                        $postRepository = new PostRepository($this->getDatabase());
-                        $postRepository->addPost($title, $excerpt, $featuredImg, $content, 1);
-                        header('Location: /dashboard/posts');
-                        exit();
-                    }
-                } else {
-                    $message = "Une erreur s'est produite pendant le téléchargement de votre image.";
-                    $data = ['post' => $post, 'message' => $message];
-                }
+        if ($this->isSubmit()) {
+            // $data = filter_input_array(INPUT_POST);
+            // $data['featured-img'] = $_FILES['featured-img'];
+            $postForm = new EditPostForm("add");
+            if ($postForm->isValid()) {
+                $postRepository = new PostRepository($this->getDatabase());
+                $fileManager = new FileManager();
+                $featuredImg = $fileManager->saveImg($postForm->data['featured-img']);
+                $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], 1);
+                header('Location: /dashboard/posts');
+                exit();
             } else {
-                $data = ['post' => $post, 'errorTitle' => $errorTitle, 'errorExcerpt' => $errorExcerpt, 'errorContent' => $errorContent];
+                $errors = $postForm->getError();
+                $this->view('back_office/new_post.html.twig', ["errors" => $errors, 'post' => $postForm->data]);
             }
+        } else {
+            $this->view('back_office/new_post.html.twig');
         }
-        $this->view('back_office/new_post.html.twig', $data);
     }
 
     public function updatePost(int $id): void
     {
         $postRepository = new PostRepository($this->getDatabase());
         $post = $postRepository->getPostById($id);
-        $data = ['post' => $post];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $formValidator = new FormValidator();
-            $title = filter_input(INPUT_POST, 'title');
-            $title = trim($title);
-            $errorTitle = $formValidator->checkTextLength($title, "titre", 5, 255);
-            $excerpt = filter_input(INPUT_POST, 'excerpt');
-            $excerpt = trim($excerpt);
-            $errorExcerpt = $formValidator->checkTextLength($excerpt, "chapô", 5, null);
-            $content = filter_input(INPUT_POST, 'content');
-            $content = trim($content);
-            $errorContent = $formValidator->checkTextLength($content, "contenu de l'article", 25, null);
-            $postUpdate = new Post();
-            $postUpdate->title = $title;
-            $postUpdate->excerpt = $excerpt;
-            $postUpdate->content = $content;
-
-            if (!$errorTitle && !$errorExcerpt && !$errorContent) {
-                if ($_FILES['featured-img']['error'] == 0) {
+        // TO DO Vérifier utilisateur connecté et admin
+        if ($this->isSubmit()) {
+            $postForm = new EditPostForm("update");
+            if ($postForm->isValid()) {
+                $featuredImg = $post->featured_img;
+                if ($postForm->data['featured-img']) {
                     $fileManager = new FileManager();
-                    $featuredImg = $fileManager->saveImg($_FILES['featured-img']);
-                    if (is_array($featuredImg)) {
-                        $errorImg = $featuredImg['error'];
-                        $data = ['post' => $postUpdate, 'errorImg' => $errorImg];
-                    } else {
-                        $postRepository = new PostRepository($this->getDatabase());
-                        $postRepository->updatePost($post->id, $title, $excerpt, $featuredImg, $content);
-                        header('Location: /dashboard/posts');
-                        exit();
-                    }
-                } else {
-                    $message = "Une erreur s'est produite pendant le téléchargement de votre image.";
-                    $data = ['post' => $postUpdate, 'message' => $message];
+                    $featuredImg = $fileManager->saveImg($postForm->data['featured-img']);
+                    $fileManager->deleteImg($post->featured_img);
                 }
+                $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content']);
+                header('Location: /dashboard/posts');
+                exit();
             } else {
-                $data = ['post' => $postUpdate, 'errorTitle' => $errorTitle, 'errorExcerpt' => $errorExcerpt, 'errorContent' => $errorContent];
+                $errors = $postForm->getError();
+                $post = $postForm->data;
+                $post['id'] = $id;
+                $this->view('back_office/update_post.html.twig', ["errors" => $errors, 'post' => $post]);
             }
-
+        } else {
+            $this->view('back_office/update_post.html.twig', ['post' => $post]);
         }
-        $this->view('back_office/update_post.html.twig', $data);
-
     }
 
     public function deletePost(int $id): void

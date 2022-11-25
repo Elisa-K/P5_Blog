@@ -18,7 +18,7 @@ class PostRepository
     }
     public function getAllPosts(int $start, int $nbPostPage): array
     {
-        $stmt = $this->dbConnect->query("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y à %Hh%i') as french_updated_at , COUNT(comment.id) as nb_comments FROM post INNER JOIN user on user.id=post.user_id LEFT JOIN comment on post.id = comment.post_id GROUP BY post.id ORDER BY post.createdAt DESC LIMIT $start, $nbPostPage");
+        $stmt = $this->dbConnect->query("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y à %Hh%i') as french_updated_at , COUNT(comment.isValid = 1 OR NULL) as nb_comments FROM post INNER JOIN user on user.id=post.user_id LEFT JOIN comment on post.id = comment.post_id GROUP BY post.id ORDER BY post.createdAt DESC LIMIT $start, $nbPostPage");
 
         $posts = [];
         while ($row = $stmt->fetch()) {
@@ -39,7 +39,7 @@ class PostRepository
 
     public function getPostById(int $id): Post
     {
-        $stmt = $this->dbConnect->prepare("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y à %Hh%i') as french_updated_at, COUNT(comment.id) as nb_comments FROM post INNER JOIN user on user.id=post.user_id LEFT JOIN comment on post.id = comment.post_id WHERE post.id = ?");
+        $stmt = $this->dbConnect->prepare("SELECT post.id, post.title, post.excerpt, post.content, post.featuredImage, user.username, DATE_FORMAT(post.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at, DATE_FORMAT(post.updateAt, '%d/%m/%Y à %Hh%i') as french_updated_at, COUNT(comment.isValid = 1 OR NULL) as nb_comments FROM post INNER JOIN user on user.id=post.user_id LEFT JOIN comment on post.id = comment.post_id WHERE post.id = ?");
 
         $stmt->execute([$id]);
 

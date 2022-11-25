@@ -66,10 +66,10 @@
 					<label for="comment" class="form-label">Ecrire un commentaire</label>
 					<textarea class="form-control" name="comment" rows="5" required></textarea>
 					{% if errorComment is defined %}
-							<div class="text-danger">
-								{{ errorComment }}
-							</div>
-							{% endif %}
+						<div class="text-danger">
+							{{ errorComment }}
+						</div>
+					{% endif %}
 				</div>
 				<div class="d-grid">
           <button class="btn-fill" id="submitButton" type="submit">Envoyer le commentaire</button>
