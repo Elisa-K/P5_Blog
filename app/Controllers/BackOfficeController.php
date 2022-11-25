@@ -9,6 +9,7 @@ use App\Models\Entities\Post;
 use Lib\Services\FileManager;
 use Lib\Services\Form\EditPostForm;
 use App\Models\Repositories\PostRepository;
+use App\Models\Repositories\CommentRepository;
 
 class BackOfficeController extends Controller
 {
@@ -98,8 +99,37 @@ class BackOfficeController extends Controller
         }
         header('Location: /dashboard/posts');
         exit();
-
     }
 
+    public function allCommentsToModerate(): void
+    {
+        $commentRepository = new CommentRepository($this->getDatabase());
+        $comments = $commentRepository->getCommentsToModerate();
+        $this->view('back_office/moderate_comment.html.twig', ['route' => '/dashboard/moderation', 'comments' => $comments]);
+    }
+
+    public function validateComment(int $id): void
+    {
+        $commentRepository = new CommentRepository($this->getDatabase());
+        if ($commentRepository->validateComment($id)) {
+
+        } else {
+
+        }
+        header('Location: /dashboard/moderation');
+        exit();
+    }
+
+    public function deleteComment(int $id): void
+    {
+        $commentRepository = new CommentRepository($this->getDatabase());
+        if ($commentRepository->deleteComment($id)) {
+
+        } else {
+
+        }
+        header('Location: /dashboard/moderation');
+        exit();
+    }
 
 }

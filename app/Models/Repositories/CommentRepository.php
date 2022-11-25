@@ -45,4 +45,40 @@ class CommentRepository
 
 		return ($affectedLines > 0);
 	}
+
+	public function getCommentsToModerate(): array
+	{
+		$stmt = $this->dbConnect->query("SELECT comment.id, comment.content, comment.isValid, post.title, user.username, DATE_FORMAT(comment.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at FROM comment INNER JOIN post on post.id=comment.post_id INNER JOIN user on user.id=comment.user_id WHERE comment.isValid is FALSE ORDER BY comment.createdAt DESC");
+		$comments = [];
+		while ($row = $stmt->fetch()) {
+			$comment = new Comment();
+			$comment->id = $row['id'];
+			$comment->author = $row['username'];
+			$comment->content = $row['content'];
+			$comment->created_at = $row['french_created_at'];
+			$comment->is_valid = $row['isValid'];
+			$comment->post_title = $row['title'];
+
+			$comments[] = $comment;
+		}
+		return $comments;
+	}
+
+	public function validateComment(int $id): bool
+	{
+		$stmt = $this->dbConnect->prepare("UPDATE comment SET isValid=1 WHERE id=:id");
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$affectedLines = $stmt->execute();
+
+		return ($affectedLines > 0);
+	}
+
+	public function deleteComment(int $id): bool
+	{
+		$stmt = $this->dbConnect->prepare("DELETE FROM comment WHERE id = :id");
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$affectedLines = $stmt->execute();
+
+		return ($affectedLines > 0);
+	}
 }

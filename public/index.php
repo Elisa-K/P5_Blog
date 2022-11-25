@@ -26,6 +26,9 @@ $router->post('/dashboard/newpost', 'BackOfficeController#addPost');
 $router->get('/dashboard/updatepost/:id', 'BackOfficeController#updatePost');
 $router->post('/dashboard/updatepost/:id', 'BackOfficeController#updatePost');
 $router->get('/dashboard/deletepost/:id', 'BackOfficeController#deletePost');
+$router->get('/dashboard/moderation', 'BackOfficeController#allCommentsToModerate');
+$router->get('/dashboard/validcomment/:id', 'BackOfficeController#validateComment');
+$router->get('/dashboard/deletecomment/:id', 'BackOfficeController#deleteComment');
 
 try {
     $router->run();

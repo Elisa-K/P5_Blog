@@ -11,7 +11,7 @@ class Comment
 	public string $author;
 	public string $content;
 	public string $created_at;
-	public int $post_id;
+	public string $post_title;
 	public int $is_valid;
 
 }
