@@ -7,6 +7,7 @@ namespace App\Controllers;
 use Lib\Controller;
 use Lib\Services\FormValidator;
 use App\Models\Entities\Comment;
+use Lib\Services\Form\EditCommentForm;
 use App\Models\Repositories\PostRepository;
 use App\Models\Repositories\CommentRepository;
 
@@ -40,18 +41,10 @@ class BlogController extends Controller
 
     public function addComment(int $postId): void
     {
-        $formValidator = new FormValidator();
-        $content = filter_input(INPUT_POST, 'comment');
-        $content = trim($content);
-        $errorComment = $formValidator->checkTextLength($content, "commentaire", 5, null);
-
-        $comment = new Comment();
-        $comment->content = $content;
-
-        if (!$errorComment) {
+        $commentForm = new EditCommentForm();
+        if ($commentForm->isValid()) {
             $commentRepository = new CommentRepository($this->getDatabase());
-            $commentRepository->addComment($postId, $content, 1);
-            // TO DO : retourner message succés + indiquer que le commentaire est soumis à validation
+            $commentRepository->addComment($postId, $commentForm->data['comment'], 1);
             header('Location: /blog/post/' . $postId);
             exit();
         } else {
@@ -59,10 +52,10 @@ class BlogController extends Controller
             $post = $postRepository->getPostById($postId);
             $commentRepository = new CommentRepository($this->getDatabase());
             $comments = $commentRepository->getCommentsByPostId($postId);
-            $data = ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'errorComment' => $errorComment];
-            $this->view('front_office/single_post.html.twig', $data);
-        }
+            $error = $commentForm->getError();
 
+            $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
+        }
 
     }
 }

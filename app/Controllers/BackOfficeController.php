@@ -39,8 +39,6 @@ class BackOfficeController extends Controller
     {
         // TO DO Vérifier utilisateur connecté et admin
         if ($this->isSubmit()) {
-            // $data = filter_input_array(INPUT_POST);
-            // $data['featured-img'] = $_FILES['featured-img'];
             $postForm = new EditPostForm("add");
             if ($postForm->isValid()) {
                 $postRepository = new PostRepository($this->getDatabase());

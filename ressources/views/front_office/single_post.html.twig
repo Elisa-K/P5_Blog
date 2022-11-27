@@ -65,9 +65,9 @@
 				<div class="mb-3">
 					<label for="comment" class="form-label">Ecrire un commentaire</label>
 					<textarea class="form-control" name="comment" rows="5" required></textarea>
-					{% if errorComment is defined %}
+					{% if error is defined %}
 						<div class="text-danger">
-							{{ errorComment }}
+							{{ error.comment }}
 						</div>
 					{% endif %}
 				</div>
