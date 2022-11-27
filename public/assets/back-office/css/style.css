@@ -589,7 +589,7 @@ Background Colors
 }
 
 .bg-success {
-  background-color: #24d2b5 !important;
+  background-color: var(--green-dark) !important;
 }
 
 .bg-info {
