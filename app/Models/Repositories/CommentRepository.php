@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace App\Models\Repositories;
 
 use PDO;
-use PDOException;
 use App\Models\Entities\Comment;
 
 class CommentRepository
 {
-	public ? PDO $dbConnect;
+	private ? PDO $dbConnect;
 
 	public function __construct($dbConnect)
 	{
 		$this->dbConnect = $dbConnect;
 	}
 
-	public function getCommentsByPostId(int $post_id): array
+	public function getCommentsByPostId(int $postId): array
 	{
-		$stmt = $this->dbConnect->query("SELECT comment.id, comment.content, comment.isValid, user.username, DATE_FORMAT(comment.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at FROM comment INNER JOIN user on user.id=comment.user_id WHERE comment.post_id = $post_id AND comment.isValid is TRUE ORDER BY comment.createdAt DESC");
+		$stmt = $this->dbConnect->query("SELECT comment.id, comment.content, comment.isValid, user.username, DATE_FORMAT(comment.createdAt, '%d/%m/%Y à %Hh%i') as french_createdAt FROM comment INNER JOIN user on user.id=comment.user_id WHERE comment.post_id = $postId AND comment.isValid is TRUE ORDER BY comment.createdAt DESC");
 
 		$comments = [];
 		while ($row = $stmt->fetch()) {
@@ -27,8 +26,8 @@ class CommentRepository
 			$comment->id = $row['id'];
 			$comment->author = $row['username'];
 			$comment->content = $row['content'];
-			$comment->created_at = $row['french_created_at'];
-			$comment->is_valid = $row['isValid'];
+			$comment->createdAt = $row['french_createdAt'];
+			$comment->isValid = $row['isValid'];
 			$comments[] = $comment;
 		}
 		return $comments;
@@ -48,16 +47,16 @@ class CommentRepository
 
 	public function getCommentsToModerate(): array
 	{
-		$stmt = $this->dbConnect->query("SELECT comment.id, comment.content, comment.isValid, post.title, user.username, DATE_FORMAT(comment.createdAt, '%d/%m/%Y à %Hh%i') as french_created_at FROM comment INNER JOIN post on post.id=comment.post_id INNER JOIN user on user.id=comment.user_id WHERE comment.isValid is FALSE ORDER BY comment.createdAt DESC");
+		$stmt = $this->dbConnect->query("SELECT comment.id, comment.content, comment.isValid, post.title, user.username, DATE_FORMAT(comment.createdAt, '%d/%m/%Y à %Hh%i') as french_createdAt FROM comment INNER JOIN post on post.id=comment.post_id INNER JOIN user on user.id=comment.user_id WHERE comment.isValid is FALSE ORDER BY comment.createdAt DESC");
 		$comments = [];
 		while ($row = $stmt->fetch()) {
 			$comment = new Comment();
 			$comment->id = $row['id'];
 			$comment->author = $row['username'];
 			$comment->content = $row['content'];
-			$comment->created_at = $row['french_created_at'];
-			$comment->is_valid = $row['isValid'];
-			$comment->post_title = $row['title'];
+			$comment->createdAt = $row['french_createdAt'];
+			$comment->isValid = $row['isValid'];
+			$comment->postTitle = $row['title'];
 
 			$comments[] = $comment;
 		}

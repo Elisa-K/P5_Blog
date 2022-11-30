@@ -7,7 +7,7 @@ namespace Lib\Services\Form;
 class EditPostForm extends EditForm
 {
 
-	const data_FR = [
+	const dataFR = [
 		'title' => 'Le titre',
 		'excerpt' => 'Le chapô',
 		'content' => 'Le contenu de l\'article',
@@ -19,7 +19,7 @@ class EditPostForm extends EditForm
 			$this->setRulesAdd();
 		if ($method == "update")
 			$this->setRulesUpdate();
-		parent::__construct(self::data_FR);
+		parent::__construct(self::dataFR);
 
 		$this->data = [
 			'title' => filter_input(INPUT_POST, 'title'),
@@ -31,7 +31,7 @@ class EditPostForm extends EditForm
 		}
 	}
 
-	public function setRulesAdd()
+	private function setRulesAdd()
 	{
 		$this->setRules(
 			[
@@ -43,7 +43,7 @@ class EditPostForm extends EditForm
 		);
 	}
 
-	public function setRulesUpdate()
+	private function setRulesUpdate()
 	{
 		$this->setRules(
 			[

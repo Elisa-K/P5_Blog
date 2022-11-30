@@ -10,8 +10,8 @@ class Comment
 	public int $id;
 	public string $author;
 	public string $content;
-	public string $created_at;
-	public string $post_title;
-	public int $is_valid;
+	public string $createdAt;
+	public string $postTitle;
+	public int $isValid;
 
 }

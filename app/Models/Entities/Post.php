@@ -11,8 +11,8 @@ class Post
     public string $title;
     public string $excerpt;
     public string $content;
-    public string $featured_img;
-    public string $created_at;
-    public ?string $updated_at;
-    public int $nb_comments;
+    public string $featuredImg;
+    public string $createdAt;
+    public ?string $updatedAt;
+    public int $nbComment;
 }

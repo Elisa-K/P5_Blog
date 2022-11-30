@@ -64,11 +64,11 @@ class BackOfficeController extends Controller
         if ($this->isSubmit()) {
             $postForm = new EditPostForm("update");
             if ($postForm->isValid()) {
-                $featuredImg = $post->featured_img;
+                $featuredImg = $post->featuredImg;
                 if ($postForm->data['featured-img']) {
                     $fileManager = new FileManager();
                     $featuredImg = $fileManager->saveImg($postForm->data['featured-img']);
-                    $fileManager->deleteImg($post->featured_img);
+                    $fileManager->deleteImg($post->featuredImg);
                 }
                 $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content']);
                 header('Location: /dashboard/posts');

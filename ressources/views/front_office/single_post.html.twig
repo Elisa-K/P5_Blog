@@ -18,22 +18,22 @@
 					</span>
 					<span>
 						<i class="far fa-calendar"></i> 
-						{{ post.created_at }}
+						{{ post.createdAt }}
 					</span>
-					{% if post.updated_at is not null %}
+					{% if post.updatedAt is not null %}
 					<span>
 						<i class="fa-solid fa-pen"></i>
-						{{ post.updated_at }}				
+						{{ post.updatedAt }}				
 					</span>
 					{% endif %}
 					<span>
 						<i class="far fa-comment-alt"></i> 
-						{{ post.nb_comments }} {% if post.nb_comments > 1 %}commentaires{% else %}commentaire{% endif %}
+						{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
 					</span>
 				</div>
 				<div class="post-contant">
 					<div class="post-img">
-						<img src="/public/assets/featured-img/{{ post.featured_img }}" alt="{{ post.title }}">
+						<img src="/public/assets/featured-img/{{ post.featuredImg }}" alt="{{ post.title }}">
 					</div>
 					{{ post.content | raw }}
 				</div>
@@ -43,7 +43,7 @@
 			<div class="list-comments">
 				<h5 class="text-muted">
 					<i class="far fa-comment-alt"></i> 
-					{{ post.nb_comments }} {% if post.nb_comments > 1 %}commentaires{% else %}commentaire{% endif %}
+					{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
 				</h5>
 				{% for comment in comments %}
 				<div class="d-flex flex-row comment-row">
@@ -53,7 +53,7 @@
 					<div class="comment-text w-100">
 						<h6>{{ comment.author }}</h6>
 						<div class="comment-footer">
-							<span class="date text-muted">{{ comment.created_at }}</span>
+							<span class="date text-muted">{{ comment.createdAt }}</span>
 							<p>{{ comment.content }}</p>
 						</div>
 					</div>
@@ -61,7 +61,7 @@
 				{% endfor %}
 			</div>
 			{# TO DO : à n'afficher que si l'utilisateur est connecté #}
-			<form action="/blog/post/addComment/{{ post.id }}" method="post" id="commentForm">
+			<form action="/blog/post/addComment/{{ post.id }}#commentForm" method="post" id="commentForm">
 				<div class="mb-3">
 					<label for="comment" class="form-label">Ecrire un commentaire</label>
 					<textarea class="form-control" name="comment" rows="5" required></textarea>

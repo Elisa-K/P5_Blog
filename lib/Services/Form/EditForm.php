@@ -7,13 +7,13 @@ namespace Lib\Services\Form;
 class EditForm
 {
 	public array $data;
-	public array $data_FR;
-	public array $rules;
-	public array $error;
+	private array $dataFR;
+	private array $rules;
+	private array $error;
 
-	public function __construct(array $data_FR)
+	public function __construct(array $dataFR)
 	{
-		$this->data_FR = $data_FR;
+		$this->dataFR = $dataFR;
 		$this->error = [];
 	}
 
@@ -24,12 +24,12 @@ class EditForm
 		return count($this->error) ? false : true;
 	}
 
-	public function setRules(array $rules): void
+	protected function setRules(array $rules): void
 	{
 		$this->rules = $rules;
 	}
 
-	public function cleanData($data): void
+	private function cleanData($data): void
 	{
 		foreach ($data as $fieldName => $value) {
 			if (!is_array($value))
@@ -39,7 +39,7 @@ class EditForm
 		}
 	}
 
-	public function addError(string $fieldName, string $message): void
+	private function addError(string $fieldName, string $message): void
 	{
 		$this->error[$fieldName] = $message;
 	}
@@ -50,8 +50,7 @@ class EditForm
 	}
 
 
-
-	public function validate(): void
+	private function validate(): void
 	{
 		foreach ($this->data as $fieldName => $value) {
 
@@ -59,25 +58,25 @@ class EditForm
 
 			foreach ($fieldRules as $rule) {
 
-				$ruleValue = $this->_getRuleSuffix($rule);
-				$rule = $this->_removeRuleSuffix($rule);
+				$ruleValue = $this->getRuleSuffix($rule);
+				$rule = $this->removeRuleSuffix($rule);
 
 				switch ($rule) {
 					case 'required':
 						if (!is_array($value) && $this->checkEmptyField($value) || (is_array($value) && $this->checkEmptyFiles($value))) {
-							$this->addError($fieldName, $this->data_FR[$fieldName] . " est obligatoire");
+							$this->addError($fieldName, $this->dataFR[$fieldName] . " est obligatoire");
 							break 2;
 						}
 						break;
 					case 'min':
 						if ($this->checkMinLength($value, (int) $ruleValue)) {
-							$this->addError($fieldName, $this->data_FR[$fieldName] . " doit faire minimum $ruleValue caractères");
+							$this->addError($fieldName, $this->dataFR[$fieldName] . " doit faire minimum $ruleValue caractères");
 							break 2;
 						}
 						break;
 					case 'max':
 						if ($this->checkMaxLength($value, (int) $ruleValue)) {
-							$this->addError($fieldName, $this->data_FR[$fieldName] . " doit faire maximum $ruleValue caractères");
+							$this->addError($fieldName, $this->dataFR[$fieldName] . " doit faire maximum $ruleValue caractères");
 							break 2;
 						}
 						break;
@@ -98,48 +97,48 @@ class EditForm
 		}
 	}
 
-	public function cleanField(string $field): string
+	private function cleanField(string $field): string
 	{
 		return trim($field);
 	}
-	public function checkEmptyField(string $field): bool
+	private function checkEmptyField(string $field): bool
 	{
 		return $field == "";
 	}
 
-	public function checkEmptyFiles($file): bool
+	private function checkEmptyFiles($file): bool
 	{
 		return $file['error'] === 4;
 	}
 
-	public function checkMinLength(string $field, int $minLength): bool
+	private function checkMinLength(string $field, int $minLength): bool
 	{
 		return strlen($field) < $minLength;
 	}
 
-	public function checkMaxLength(string $field, int $maxLength): bool
+	private function checkMaxLength(string $field, int $maxLength): bool
 	{
 		return strlen($field) > $maxLength;
 	}
 
-	public function checkSizeFile(int $fileSize, int $sizeMax): bool
+	private function checkSizeFile(int $fileSize, int $sizeMax): bool
 	{
 		return $fileSize > ($sizeMax * 1024 * 1024);
 	}
 
-	public function checkMimeTypeFile(string $fileType, array $allowedTypes): bool
+	private function checkMimeTypeFile(string $fileType, array $allowedTypes): bool
 	{
 		return !in_array($fileType, $allowedTypes);
 	}
 
 
-	public function _removeRuleSuffix(string $string): string
+	private function removeRuleSuffix(string $string): string
 	{
 		$arr = explode(':', $string);
 		return $arr[0];
 	}
 
-	public function _getRuleSuffix($string): string|null
+	private function getRuleSuffix($string): string|null
 	{
 		$arr = explode(":", $string);
 		return isset($arr[1]) ? $arr[1] : null;

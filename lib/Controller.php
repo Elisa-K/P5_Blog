@@ -40,9 +40,5 @@ class Controller
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
-
-    public function checkFormValidate()
-    {
-
-    }
+    
 }

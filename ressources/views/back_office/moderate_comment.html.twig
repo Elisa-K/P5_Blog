@@ -33,10 +33,10 @@
 							<tbody>
 								{% for comment in comments %}
 									<tr>
-										<td>{{comment.post_title}}</td>
+										<td>{{comment.postTitle}}</td>
 										<td>{{comment.author}}</td>
 										<td>{{comment.content}}</td>
-										<td>{{comment.created_at}}</td>										
+										<td>{{comment.createdAt}}</td>										
 										<td>
 											<a class="btn waves-effect waves-light btn-primary text-white" data-bs-toggle="modal" data-bs-target="#validateCommentConfirm">Valider</a>
 											<div class="modal fade" id="validateCommentConfirm" tabindex="-1" aria-labelledby="validateCommentConfirmQuestion" aria-hidden="true">
