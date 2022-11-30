@@ -1,0 +1,86 @@
+{% extends 'back_office/layout.html.twig' %}
+
+{% block title %}
+  EK - Modération des commentaires
+{% endblock %}
+
+{% block content %}
+	<div class="row page-titles">
+        <div class="col-md-12 align-self-center">
+            <h3 class="text-themecolor">Les commentaires en attente de modération</h3>			
+        </div>        
+    </div>
+	<div class="row">
+		<div class="col-12">
+		{% if comments is empty %}
+			<div class="alert alert-primary" role="alert">
+				Aucun commentaire à modérer.
+			</div>
+		{% else %}
+			<div class="card">
+				<div class="card-body">								
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Titre de l'article</th>
+									<th>Pseudo</th>
+									<th>Commentaire</th>
+									<th>Ajouté le</th>								
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for comment in comments %}
+									<tr>
+										<td>{{comment.postTitle}}</td>
+										<td>{{comment.author}}</td>
+										<td>{{comment.content}}</td>
+										<td>{{comment.createdAt}}</td>										
+										<td>
+											<a class="btn waves-effect waves-light btn-primary text-white" data-bs-toggle="modal" data-bs-target="#validateCommentConfirm">Valider</a>
+											<div class="modal fade" id="validateCommentConfirm" tabindex="-1" aria-labelledby="validateCommentConfirmQuestion" aria-hidden="true">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h1 class="modal-title fs-5" id="validateCommentConfirmQuestion">Êtes-vous sûr de vouloir valider le commentaire ?</h1>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>														
+														<div class="modal-footer">
+															<a href="/dashboard/validcomment/{{comment.id}}" class="btn btn-danger text-white">Valider</a>	
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<a class="btn waves-effect waves-light btn-danger text-white" data-bs-toggle="modal" data-bs-target="#deleteCommentConfirm">Supprimer</a>
+											<div class="modal fade" id="deleteCommentConfirm" tabindex="-1" aria-labelledby="deleteCommentConfirmQuestion" aria-hidden="true">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h1 class="modal-title fs-5" id="deleteCommentConfirmQuestion">Êtes-vous sûr de vouloir supprimer le commentaire ?</h1>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<div class="modal-body fw-bold">
+																Attention cette action est irréversible !
+														</div>
+														<div class="modal-footer">
+															<a href="/dashboard/deletecomment/{{comment.id}}" class="btn btn-danger text-white">Supprimer</a>	
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>				
+				</div>				
+			</div>
+		{% endif %}
+		</div>
+	</div>
+
+{% endblock %}

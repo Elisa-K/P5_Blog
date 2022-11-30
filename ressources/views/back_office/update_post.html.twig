@@ -1,7 +1,7 @@
 {% extends 'back_office/layout.html.twig' %}
 
 {% block title %}
-  EK - Nouvel article
+  EK - Mise à jour de l'article
 {% endblock %}
 {% block stylesheets %}
 	<script src="/vendor/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
@@ -10,10 +10,10 @@
 {% block content %}
 	<div class="row page-titles">
 		<div class="col-md-12 align-self-center">
-				<h3 class="text-themecolor text-center">Ajouter un nouvel article</h3>				
+				<h3 class="text-themecolor text-center">Mettre à jour l'article</h3>				
 		</div>		
 	</div>
-	{% include 'back_office/form_post.html.twig' with {'action': 'add'} %}
+	{% include 'back_office/form_post.html.twig' with {'action': 'update'} %}
 {% endblock %}
 
 {% block javascripts %}

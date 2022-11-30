@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Lib\Controller;
+use Lib\Services\FormValidator;
+use App\Models\Entities\Comment;
+use Lib\Services\Form\EditCommentForm;
 use App\Models\Repositories\PostRepository;
+use App\Models\Repositories\CommentRepository;
 
 class BlogController extends Controller
 {
@@ -27,8 +31,32 @@ class BlogController extends Controller
 
     public function getPost(int $id): void
     {
-        $postRepositoy = new PostRepository($this->getDatabase());
-        $post = $postRepositoy->getPostById($id);
-        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post]);
+        $postRepository = new PostRepository($this->getDatabase());
+        $post = $postRepository->getPostById($id);
+        $commentRepository = new CommentRepository($this->getDatabase());
+        $comments = $commentRepository->getCommentsByPostId($id);
+
+        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments]);
+    }
+
+    public function addComment(int $postId): void
+    {
+        $commentForm = new EditCommentForm();
+        if ($commentForm->isValid()) {
+            $commentRepository = new CommentRepository($this->getDatabase());
+            $commentRepository->addComment($postId, $commentForm->data['comment'], 1);
+            $this->addFlashMessage("Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié.");
+            header('Location: /blog/post/' . $postId);
+            exit();
+        } else {
+            $postRepository = new PostRepository($this->getDatabase());
+            $post = $postRepository->getPostById($postId);
+            $commentRepository = new CommentRepository($this->getDatabase());
+            $comments = $commentRepository->getCommentsByPostId($postId);
+            $error = $commentForm->getError();
+
+            $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
+        }
+
     }
 }

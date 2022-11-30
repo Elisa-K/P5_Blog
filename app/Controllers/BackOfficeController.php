@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Lib\Controller;
+use App\Models\Entities\Post;
 use Lib\Services\FileManager;
-use Lib\Services\FormValidator;
+use Lib\Services\Form\EditPostForm;
 use App\Models\Repositories\PostRepository;
+use App\Models\Repositories\CommentRepository;
 
 class BackOfficeController extends Controller
 {
@@ -33,44 +35,101 @@ class BackOfficeController extends Controller
         $this->view('back_office/all_posts.html.twig', ['route' => '/dashboard/posts', 'posts' => $posts, 'nbPage' => $nbPage, 'actual_page' => $page]);
     }
 
-    public function addPost()
+    public function addPost(): void
     {
         // TO DO Vérifier utilisateur connecté et admin
-
-        $data = [];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $formValidator = new FormValidator();
-            $title = filter_input(INPUT_POST, 'title');
-            $title = trim($title);
-            $errorTitle = $formValidator->checkTextLength($title, "titre", 5, 255);
-            $excerpt = filter_input(INPUT_POST, 'excerpt');
-            $excerpt = trim($excerpt);
-            $errorExcerpt = $formValidator->checkTextLength($excerpt, "chapô", 5, null);
-            $content = filter_input(INPUT_POST, 'content');
-            $content = trim($content);
-            $errorContent = $formValidator->checkTextLength($content, "contenu de l'article", 25, null);
-
-            if (!$errorTitle && !$errorExcerpt && !$errorContent) {
-                if ($_FILES['featured-img']['error'] == 0) {
-                    $fileManager = new FileManager();
-                    $featuredImg = $fileManager->saveImg($_FILES['featured-img']);
-                    if (is_array($featuredImg)) {
-                        $errorImg = $featuredImg['error'];
-                        $data = ['title' => $title, 'excerpt' => $excerpt, 'content' => $content, 'errorImg' => $errorImg];
-                    } else {
-                        $postRepository = new PostRepository($this->getDatabase());
-                        $postRepository->addPost($title, $excerpt, $featuredImg, $content, 1);
-                        header('Location: /dashboard/posts');
-                        exit();
-                    }
-                } else {
-                    $message = "Une erreur s'est produite pendant le téléchargement de votre image.";
-                    $data = ['title' => $title, 'excerpt' => $excerpt, 'content' => $content, 'message' => $message];
-                }
+        if ($this->isSubmit()) {
+            $postForm = new EditPostForm("add");
+            if ($postForm->isValid()) {
+                $postRepository = new PostRepository($this->getDatabase());
+                $fileManager = new FileManager();
+                $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
+                $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], 1);
+                $this->addFlashMessage("Votre article a bien été publié !");
+                header('Location: /dashboard/posts');
+                exit();
             } else {
-                $data = ['title' => $title, 'excerpt' => $excerpt, 'content' => $content, 'errorTitle' => $errorTitle, 'errorExcerpt' => $errorExcerpt, 'errorContent' => $errorContent];
+                $errors = $postForm->getError();
+                $this->view('back_office/new_post.html.twig', ["errors" => $errors, 'post' => $postForm->data]);
             }
+        } else {
+            $this->view('back_office/new_post.html.twig');
         }
-        $this->view('back_office/new_post.html.twig', $data);
     }
+
+    public function updatePost(int $id): void
+    {
+        $postRepository = new PostRepository($this->getDatabase());
+        $post = $postRepository->getPostById($id);
+        // TO DO Vérifier utilisateur connecté et admin
+        if ($this->isSubmit()) {
+            $postForm = new EditPostForm("update");
+            if ($postForm->isValid()) {
+                $featuredImg = $post->featuredImg;
+                if ($postForm->data['featuredImg']) {
+                    $fileManager = new FileManager();
+                    $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
+                    $fileManager->deleteImg($post->featuredImg);
+                }
+                $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content']);
+                $this->addFlashMessage("Votre article a bien été mise à jour !");
+                header('Location: /dashboard/posts');
+                exit();
+            } else {
+                $errors = $postForm->getError();
+                $post = $postForm->data;
+                $post['id'] = $id;
+                $this->view('back_office/update_post.html.twig', ["errors" => $errors, 'post' => $post]);
+            }
+        } else {
+            $this->view('back_office/update_post.html.twig', ['post' => $post]);
+        }
+    }
+
+    public function deletePost(int $id): void
+    {
+        $postRepository = new PostRepository($this->getDatabase());
+        $featuredImg = $postRepository->getFeaturedImg($id);
+        if ($postRepository->deletePost($id)) {
+            $fileManager = new FileManager();
+            $fileManager->deleteImg($featuredImg);
+            $this->addFlashMessage("L'article a bien été supprimé !");
+        } else {
+            $this->addFlashMessage("Une erreur s'est produite lors de la suppression de l'article !");
+        }
+        header('Location: /dashboard/posts');
+        exit();
+    }
+
+    public function allCommentsToModerate(): void
+    {
+        $commentRepository = new CommentRepository($this->getDatabase());
+        $comments = $commentRepository->getCommentsToModerate();
+        $this->view('back_office/moderate_comment.html.twig', ['route' => '/dashboard/moderation', 'comments' => $comments]);
+    }
+
+    public function validateComment(int $id): void
+    {
+        $commentRepository = new CommentRepository($this->getDatabase());
+        if ($commentRepository->validateComment($id)) {
+            $this->addFlashMessage("Le commentaire a bien été validé !");
+        } else {
+            $this->addFlashMessage("Une erreur s'est produite lors de la validation du commentaire !");
+        }
+        header('Location: /dashboard/moderation');
+        exit();
+    }
+
+    public function deleteComment(int $id): void
+    {
+        $commentRepository = new CommentRepository($this->getDatabase());
+        if ($commentRepository->deleteComment($id)) {
+            $this->addFlashMessage("Le commentaire a bien été supprimé !");
+        } else {
+            $this->addFlashMessage("Une erreur s'est produite lors de la suppression du commentaire !");
+        }
+        header('Location: /dashboard/moderation');
+        exit();
+    }
+
 }

@@ -1,46 +1,35 @@
 <div class="row">
 	<div class="col-lg-12 col-xlg-9 col-md-12 mx-auto">
-	{% if message is defined %}
+	{% if errors is defined %}
 		<div class="alert alert-danger" role="alert">
-			{{ message }}				
+			<ul>
+				{% for message in errors %}					
+						<li>{{message}}</li>					
+				{% endfor %}
+			</ul>				
 		</div>
 	{% endif %}
 		<div class="card">
 			<div class="card-body">
-				<form action="/dashboard/newpost" method="post" enctype="multipart/form-data" class="form-horizontal form-material mx-2 was-validate">
+				<form action="/dashboard/{% if action == 'add' %}newpost{% elseif action == 'update' %}updatepost/{{post.id}}{% endif %}" method="post" enctype="multipart/form-data" class="form-horizontal form-material mx-2 was-validate">
 					<div class="form-group">
 						<label for="title" class="col-md-12">Titre</label>
 						<div class="col-md-12">
-							<input type="text" name="title" {% if title is defined %} value="{{ title }}" {% endif %} class="form-control form-control-line" maxlength="255" minlength="5" required>
-							{% if errorTitle is defined %}
-							<div class="text-danger">
-								{{ errorTitle }}
-							</div>
-							{% endif %}
+							<input type="text" name="title" {% if post.title is defined %} value="{{ post.title }}" {% endif %} class="form-control form-control-line" maxlength="255" minlength="5" required>						
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-md-12" for="excerpt">Chapô</label>
 						<div class="col-md-12">
-							<textarea name="excerpt" rows="5" class="form-control form-control-line" required>{% if excerpt is defined %}{{ excerpt }}{% endif %}</textarea>
-							{% if errorExcerpt is defined %}
-							<div class="text-danger">
-								{{ errorExcerpt }}
-							</div>
-							{% endif %}
+							<textarea name="excerpt" rows="5" class="form-control form-control-line" required>{% if post.excerpt is defined %}{{ post.excerpt }}{% endif %}</textarea>						
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-12" for="featured-img">Image à la une</label>
-						<input name="featured-img" type="file" class="form-control form-control-line" accept="image/png, image/jpeg" required>
+						<label class="col-md-12" for="featured-img">Image à la une</label>						
+						<input name="featured-img" type="file" class="form-control form-control-line" accept="image/png, image/jpeg" {% if action == 'add' %}required{% endif %}>
 					</div>
 					<div class="form-group">
-						<label class="col-md-12" for="excerpt">Contenu</label>
-						{% if errorContent is defined %}
-							<div class="text-danger">
-								{{ errorContent }}
-							</div>
-						{% endif %}
+						<label class="col-md-12" for="excerpt">Contenu</label>						
 						<div class="error alert alert-danger mb-2" role="alert"></div>						
 						<div class="col-md-12">
 							<textarea id="content-tiny" name="content" class='tinymce'></textarea>

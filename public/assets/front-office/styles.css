@@ -1,6 +1,6 @@
 :root {
   --green-light: #a1b986;
-  --green-dark: c;
+  --green-dark: #536045;
   --rose-light: #fff3ee;
 }
 
@@ -69,6 +69,10 @@ h1 {
 
 h2 {
   margin-bottom: 30px;
+}
+
+.bg-success {
+  background-color: var(--green-dark) !important;
 }
 
 .intro-h1::before {
@@ -484,6 +488,14 @@ h4::before {
   font-size: 1.1em;
 }
 
+.comment-row{
+  border-bottom: 1px solid rgba(120, 130, 140, 0.13);
+  padding: 15px;
+}
+
+.comment-row .date{
+  font-size: 12px;
+}
 ul.list-in-text {
   list-style: none;
   margin-left: 0;

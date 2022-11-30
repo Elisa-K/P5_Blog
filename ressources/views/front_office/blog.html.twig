@@ -11,7 +11,7 @@
 				{% for post in posts %}
 					<div class="post-item">
 						<div class="post-img">
-							<img src="/public/assets/featured-img/{{ post.featured_img }}" alt="">
+							<img src="/public/assets/featured-img/{{ post.featuredImg }}" alt="">
 						</div>
 						<div class="post-main-info">
 							<h4>{{ post.title }}</h4>						
@@ -22,17 +22,17 @@
 								</span>
 								<span>
 									<i class="far fa-calendar"></i>
-									{{ post.created_at }}
+									{{ post.createdAt }}
 								</span>
-								{% if post.updated_at is not null %}
+								{% if post.updatedAt is not null %}
 									<span>
 										<i class="fa-solid fa-pen"></i>
-										{{ post.updated_at }}				
+										{{ post.updatedAt }}				
 									</span>
 								{% endif %}
 								<span>
 									<i class="far fa-comment-alt"></i> 
-									{{ post.nb_comments }} {% if post.nb_comments > 1 %}commentaires{% else %}commentaire{% endif %}
+									{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
 								</span>
 							</div>
 							<p>{{ post.excerpt }}</p>

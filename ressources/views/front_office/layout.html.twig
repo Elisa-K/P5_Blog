@@ -55,6 +55,20 @@
 			<div class="container">
 			{% block content %}{% endblock %}
 			</div>
+			{% if flashMessage is not empty %}
+				<div class="toast-container fixed-bottom w-100" style="z-index:100">
+					<div class="toast w-100 bg-success text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+						<div class="d-flex">
+							<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">							
+								{% for message in flashMessage %}
+									{{ message }}
+								{% endfor %}
+							</div>
+							<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+						</div>
+					</div>
+				</div>
+			{% endif %}
 		</main>
 		{# Footer #}
 		<footer>
