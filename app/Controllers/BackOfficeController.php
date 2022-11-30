@@ -43,8 +43,9 @@ class BackOfficeController extends Controller
             if ($postForm->isValid()) {
                 $postRepository = new PostRepository($this->getDatabase());
                 $fileManager = new FileManager();
-                $featuredImg = $fileManager->saveImg($postForm->data['featured-img']);
+                $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
                 $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], 1);
+                $this->addFlashMessage("Votre article a bien été publié !");
                 header('Location: /dashboard/posts');
                 exit();
             } else {
@@ -65,12 +66,13 @@ class BackOfficeController extends Controller
             $postForm = new EditPostForm("update");
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
-                if ($postForm->data['featured-img']) {
+                if ($postForm->data['featuredImg']) {
                     $fileManager = new FileManager();
-                    $featuredImg = $fileManager->saveImg($postForm->data['featured-img']);
+                    $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
                     $fileManager->deleteImg($post->featuredImg);
                 }
                 $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content']);
+                $this->addFlashMessage("Votre article a bien été mise à jour !");
                 header('Location: /dashboard/posts');
                 exit();
             } else {
@@ -91,9 +93,9 @@ class BackOfficeController extends Controller
         if ($postRepository->deletePost($id)) {
             $fileManager = new FileManager();
             $fileManager->deleteImg($featuredImg);
-            // retour avec un message succés
+            $this->addFlashMessage("L'article a bien été supprimé !");
         } else {
-            // retour avec un message erreur
+            $this->addFlashMessage("Une erreur s'est produite lors de la suppression de l'article !");
         }
         header('Location: /dashboard/posts');
         exit();
@@ -110,9 +112,9 @@ class BackOfficeController extends Controller
     {
         $commentRepository = new CommentRepository($this->getDatabase());
         if ($commentRepository->validateComment($id)) {
-
+            $this->addFlashMessage("Le commentaire a bien été validé !");
         } else {
-
+            $this->addFlashMessage("Une erreur s'est produite lors de la validation du commentaire !");
         }
         header('Location: /dashboard/moderation');
         exit();
@@ -122,9 +124,9 @@ class BackOfficeController extends Controller
     {
         $commentRepository = new CommentRepository($this->getDatabase());
         if ($commentRepository->deleteComment($id)) {
-
+            $this->addFlashMessage("Le commentaire a bien été supprimé !");
         } else {
-
+            $this->addFlashMessage("Une erreur s'est produite lors de la suppression du commentaire !");
         }
         header('Location: /dashboard/moderation');
         exit();

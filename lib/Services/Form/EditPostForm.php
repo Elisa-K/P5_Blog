@@ -11,7 +11,7 @@ class EditPostForm extends EditForm
 		'title' => 'Le titre',
 		'excerpt' => 'Le chapô',
 		'content' => 'Le contenu de l\'article',
-		'featured-img' => 'L\'image à la une'
+		'featuredImg' => 'L\'image à la une'
 	];
 	public function __construct(string $method)
 	{
@@ -27,7 +27,7 @@ class EditPostForm extends EditForm
 			'content' => filter_input(INPUT_POST, 'content')
 		];
 		if ($_FILES['featured-img']['error'] != 4) {
-			$this->data['featured-img'] = $_FILES['featured-img'];
+			$this->data['featuredImg'] = $_FILES['featured-img'];
 		}
 	}
 
@@ -38,7 +38,7 @@ class EditPostForm extends EditForm
 				'title' => 'required|min:5|max:255',
 				'excerpt' => 'required|min:5',
 				'content' => 'required|min:25',
-				'featured-img' => 'required|image|maxSizeFile:5'
+				'featuredImg' => 'required|image|maxSizeFile:5'
 			]
 		);
 	}
@@ -50,7 +50,7 @@ class EditPostForm extends EditForm
 				'title' => 'required|min:5|max:255',
 				'excerpt' => 'required|min:5',
 				'content' => 'required|min:25',
-				'featured-img' => 'image|maxSizeFile:5'
+				'featuredImg' => 'image|maxSizeFile:5'
 			]
 		);
 	}
