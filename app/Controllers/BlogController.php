@@ -45,7 +45,7 @@ class BlogController extends Controller
         if ($commentForm->isValid()) {
             $commentRepository = new CommentRepository($this->getDatabase());
             $commentRepository->addComment($postId, $commentForm->data['comment'], 1);
-            $this->addFlashMessage("Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié.");
+            $this->addFlashMessage(["success" => "Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié."]);
             header('Location: /blog/post/' . $postId);
             exit();
         } else {
@@ -54,9 +54,7 @@ class BlogController extends Controller
             $commentRepository = new CommentRepository($this->getDatabase());
             $comments = $commentRepository->getCommentsByPostId($postId);
             $error = $commentForm->getError();
-
             $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
         }
-
     }
 }
