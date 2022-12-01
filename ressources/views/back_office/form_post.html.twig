@@ -3,10 +3,10 @@
 	{% if errors is defined %}
 		<div class="alert alert-danger" role="alert">
 			<ul>
-				{% for message in errors %}					
-						<li>{{message}}</li>					
+				{% for message in errors %}
+						<li>{{message}}</li>
 				{% endfor %}
-			</ul>				
+			</ul>
 		</div>
 	{% endif %}
 		<div class="card">
@@ -15,25 +15,25 @@
 					<div class="form-group">
 						<label for="title" class="col-md-12">Titre</label>
 						<div class="col-md-12">
-							<input type="text" name="title" {% if post.title is defined %} value="{{ post.title }}" {% endif %} class="form-control form-control-line" maxlength="255" minlength="5" required>						
+							<input type="text" name="title" {% if post.title is defined %} value="{{ post.title }}" {% endif %} class="form-control form-control-line" maxlength="255" minlength="5" required>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-md-12" for="excerpt">Chapô</label>
 						<div class="col-md-12">
-							<textarea name="excerpt" rows="5" class="form-control form-control-line" required>{% if post.excerpt is defined %}{{ post.excerpt }}{% endif %}</textarea>						
+							<textarea name="excerpt" rows="5" class="form-control form-control-line" required>{% if post.excerpt is defined %}{{ post.excerpt }}{% endif %}</textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-12" for="featured-img">Image à la une</label>						
+						<label class="col-md-12" for="featured-img">Image à la une</label>
 						<input name="featured-img" type="file" class="form-control form-control-line" accept="image/png, image/jpeg" {% if action == 'add' %}required{% endif %}>
 					</div>
 					<div class="form-group">
-						<label class="col-md-12" for="excerpt">Contenu</label>						
-						<div class="error alert alert-danger mb-2" role="alert"></div>						
+						<label class="col-md-12" for="excerpt">Contenu</label>
+						<div class="error alert alert-danger mb-2" role="alert"></div>
 						<div class="col-md-12">
 							<textarea id="content-tiny" name="content" class='tinymce'></textarea>
-						</div>							
+						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">

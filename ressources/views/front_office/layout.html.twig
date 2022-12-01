@@ -11,8 +11,8 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 		<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"/>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">		
-		<link rel="stylesheet" href="/public/assets/front-office/styles.css"/> 
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+		<link rel="stylesheet" href="/public/assets/front-office/styles.css"/>
 		{% block stylesheets %}{% endblock %}
 	</head>
 
@@ -45,7 +45,7 @@
 						</li>
 						<li class="nav-item-right">
 							<a class="nav-link-right btn-fill" href="/signin">Connexion</a>
-						</li>						
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -55,20 +55,20 @@
 			<div class="container">
 			{% block content %}{% endblock %}
 			</div>
-			{% if flashMessage is not empty %}
-				<div class="toast-container fixed-bottom w-100" style="z-index:100">
-					<div class="toast w-100 bg-success text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-						<div class="d-flex">
-							<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">							
-								{% for message in flashMessage %}
-									{{ message }}
-								{% endfor %}
+			{% for messages in flashMessage %}
+				{% for type, message in messages %}
+					<div class="toast-container fixed-bottom w-100" style="z-index:100">
+						<div class="toast w-100 bg-{{type}} text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+							<div class="d-flex">
+								<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">
+										{{ message }}
+								</div>
+								<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 							</div>
-							<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 						</div>
 					</div>
-				</div>
-			{% endif %}
+				{% endfor %}
+			{% endfor %}
 		</main>
 		{# Footer #}
 		<footer>

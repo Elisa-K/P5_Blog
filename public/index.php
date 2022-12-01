@@ -17,6 +17,9 @@ $router->get('/', "HomeController#index");
 $router->get('/blog', "BlogController#allPosts");
 $router->get('/blog/post/:id', "BlogController#getPost");
 $router->post('/blog/post/addComment/:id', "BlogController#addComment");
+$router->get('/signup', 'BlogController#signUp');
+$router->post('/signup', 'BlogController#signUp');
+$router->get('/signin', 'BlogController#signIn');
 
 // Back-Office (admin)
 $router->get('/dashboard', "BackOfficeController#dashboard");
@@ -30,9 +33,11 @@ $router->get('/dashboard/moderation', 'BackOfficeController#allCommentsToModerat
 $router->get('/dashboard/validcomment/:id', 'BackOfficeController#validateComment');
 $router->get('/dashboard/deletecomment/:id', 'BackOfficeController#deleteComment');
 
-try {
-    $router->run();
-} catch (TypeError $e) {
-    $errorController = new ErrorController();
-    $errorController->error404();
-}
+// try {
+//     $router->run();
+// } catch (TypeError $e) {
+//     $errorController = new ErrorController();
+//     $errorController->error404();
+// }
+
+$router->run();

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Lib\Services\Form;
 
+use Lib\Database;
+
 class EditForm
 {
     public array $data;
@@ -59,7 +61,6 @@ class EditForm
             foreach ($fieldRules as $rule) {
                 $ruleValue = $this->getRuleSuffix($rule);
                 $rule = $this->removeRuleSuffix($rule);
-
                 switch ($rule) {
                     case 'required':
                         if (!is_array($value) && $this->checkEmptyField($value) || (is_array($value) && $this->checkEmptyFiles($value))) {
@@ -91,6 +92,19 @@ class EditForm
                             break 2;
                         }
                         break;
+                    case 'email':
+                        if (!$this->checkEmail($value)) {
+                            $this->addError($fieldName, "L'email n'est pas valide");
+                            break 2;
+                        }
+                        break;
+                    case 'unique':
+                        if ($this->checkIsUnique($fieldName, $value, $ruleValue)) {
+                            $this->addError($fieldName, $this->dataFR[$fieldName] . " est déjà utilisé");
+                            break 2;
+                        }
+                        break;
+
                 }
             }
         }
@@ -130,6 +144,20 @@ class EditForm
         return !in_array($fileType, $allowedTypes);
     }
 
+    private function checkEmail(string $email): string|bool
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    private function checkIsUnique(string $field, string $value, string $table): bool
+    {
+
+        $db = new Database();
+        $dbConnect = $db->getConnection();
+        $stmt = $dbConnect->query("SELECT * FROM $table WHERE $field = '" . $value . "'");
+        $row = $stmt->fetchAll();
+        return count($row) > 0;
+    }
 
     private function removeRuleSuffix(string $string): string
     {

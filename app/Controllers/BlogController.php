@@ -7,8 +7,10 @@ namespace App\Controllers;
 use Lib\Controller;
 use Lib\Services\FormValidator;
 use App\Models\Entities\Comment;
+use Lib\Services\Form\EditUserForm;
 use Lib\Services\Form\EditCommentForm;
 use App\Models\Repositories\PostRepository;
+use App\Models\Repositories\UserRepository;
 use App\Models\Repositories\CommentRepository;
 
 class BlogController extends Controller
@@ -56,5 +58,29 @@ class BlogController extends Controller
             $error = $commentForm->getError();
             $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
         }
+    }
+
+    public function signUp(): void
+    {
+        if ($this->isSubmit()) {
+            $userForm = new EditUserForm();
+            if ($userForm->isValid()) {
+                $userRepository = new UserRepository($this->getDatabase());
+                $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
+                $this->addFlashMessage(["success" => "Votre compte a bien été créé. Vous pouvez maintenant vous connecter."]);
+                header('Location: /signin');
+                exit();
+            } else {
+                $errors = $userForm->getError();
+                $this->view('front_office/sign_up.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $errors]);
+            }
+        } else {
+            $this->view('front_office/sign_up.html.twig', ['route' => '/signup']);
+        }
+    }
+
+    public function signIn(): void
+    {
+        $this->view('front_office/sign_in.html.twig', ['route' => '/signin']);
     }
 }
