@@ -20,11 +20,10 @@ class Controller
     {
         $db = new Database();
         $this->dbConnect = $db->getConnection();
+        $this->session = new SessionManager();
         if (!isset($_SESSION['messages'])) {
             $_SESSION['messages'] = [];
         }
-
-        $this->session = new SessionManager();
     }
 
     public function getDatabase(): ? PDO

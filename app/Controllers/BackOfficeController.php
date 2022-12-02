@@ -45,7 +45,7 @@ class BackOfficeController extends Controller
                 $postRepository = new PostRepository($this->getDatabase());
                 $fileManager = new FileManager();
                 $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
-                $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], 1);
+                $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], $this->session->get('user')->id);
                 $this->addFlashMessage(["success" => "Votre article a bien été publié !"]);
                 header('Location: /dashboard/posts');
                 exit();

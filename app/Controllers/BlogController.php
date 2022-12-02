@@ -47,7 +47,7 @@ class BlogController extends Controller
         $commentForm = new EditCommentForm();
         if ($commentForm->isValid()) {
             $commentRepository = new CommentRepository($this->getDatabase());
-            $commentRepository->addComment($postId, $commentForm->data['comment'], 1);
+            $commentRepository->addComment($postId, $commentForm->data['comment'], $this->session->get('user')->id);
             $this->addFlashMessage(["success" => "Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié."]);
             header('Location: /blog/post/' . $postId);
             exit();

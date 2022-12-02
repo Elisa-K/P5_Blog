@@ -8,7 +8,7 @@ use Symfony\Component\Dotenv\Dotenv;
 require_once "../vendor/autoload.php";
 // $dotenv = new Dotenv();
 // $dotenv->load(__DIR__ . '/../.env');
-session_start();
+
 $router = new Router(filter_input(INPUT_GET, 'url'));
 
 // Routes
