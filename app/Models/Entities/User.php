@@ -6,6 +6,7 @@ namespace App\Models\Entities;
 
 class User
 {
+	public int $id;
 	public string $username;
 	public string $firstname;
 	public string $lastname;

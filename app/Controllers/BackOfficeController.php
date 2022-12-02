@@ -9,6 +9,7 @@ use App\Models\Entities\Post;
 use Lib\Services\FileManager;
 use Lib\Services\Form\EditPostForm;
 use App\Models\Repositories\PostRepository;
+use App\Models\Repositories\UserRepository;
 use App\Models\Repositories\CommentRepository;
 
 class BackOfficeController extends Controller
@@ -130,6 +131,40 @@ class BackOfficeController extends Controller
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la suppression du commentaire !"]);
         }
         header('Location: /dashboard/moderation');
+        exit();
+    }
+
+    public function allUser(): void
+    {
+        $userRepository = new UserRepository($this->getDatabase());
+        $adminConnected = $this->session->get('user');
+        $users = $userRepository->getAllUser($adminConnected->id);
+        $this->view('back_office/users.html.twig', ['route' => '/dashboard/users', 'users' => $users]);
+    }
+
+    public function allowPermissionAdmin(int $id)
+    {
+        $userRepository = new UserRepository($this->getDatabase());
+        $user = $userRepository->getUserById($id);
+        if ($userRepository->setPermissionUser($id, TRUE)) {
+            $this->addFlashMessage(["success" => "Le droit administrateur a bien été donné à $user->firstname $user->lastname"]);
+        } else {
+            $this->addFlashMessage(["error" => "Une erreur s'est produite. Le droit administrateur n'a pu être donné à $user->firstname $user->lastname"]);
+        }
+        header('Location: /dashboard/users');
+        exit();
+    }
+
+    public function denyPermissionAdmin(int $id)
+    {
+        $userRepository = new UserRepository($this->getDatabase());
+        $user = $userRepository->getUserById($id);
+        if ($userRepository->setPermissionUser($id, FALSE)) {
+            $this->addFlashMessage(["success" => "Le droit administrateur a bien été retiré à $user->firstname $user->lastname"]);
+        } else {
+            $this->addFlashMessage(["error" => "Une erreur s'est produite. Le droit administrateur n'a pu être retiré à $user->firstname $user->lastname"]);
+        }
+        header('Location: /dashboard/users');
         exit();
     }
 }

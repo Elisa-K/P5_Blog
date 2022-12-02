@@ -35,7 +35,7 @@ class UserRepository
 
 	public function getUserByEmail(string $email, string $password): User|string
 	{
-		$stmt = $this->dbConnect->prepare("SELECT id, username, firstname, lastname, email, password, DATE_FORMAT(createdAt, '%d/%m/%Y à %Hh%i') as french_createdAt, isAdmin FROM user WHERE email = :email");
+		$stmt = $this->dbConnect->prepare("SELECT id, username, firstname, lastname, email, password, createdAt, isAdmin FROM user WHERE email = :email");
 
 		$stmt->bindParam(':email', $email, PDO::PARAM_STR);
 		$stmt->execute();
@@ -43,11 +43,12 @@ class UserRepository
 			$row = $stmt->fetch();
 			if (password_verify($password, $row['password'])) {
 				$user = new User();
+				$user->id = $row['id'];
 				$user->username = $row['username'];
 				$user->firstname = $row['firstname'];
 				$user->lastname = $row['lastname'];
 				$user->email = $row['email'];
-				$user->createdAt = $row['french_createdAt'];
+				$user->createdAt = $row['createdAt'];
 				$user->isAdmin = $row['isAdmin'];
 				return $user;
 			} else {
@@ -56,5 +57,50 @@ class UserRepository
 		} else {
 			return "Aucun compte ne correspond à cette adresse email";
 		}
+	}
+
+	public function getAllUser(int $id): array
+	{
+		$stmt = $this->dbConnect->query("SELECT id, username, firstname, lastname, email, DATE_FORMAT(createdAt, '%d/%m/%Y à %Hh%i') as french_createdAt, isAdmin FROM user WHERE id != $id ORDER BY isAdmin DESC");
+
+		$users = [];
+
+		while ($row = $stmt->fetch()) {
+			$user = new User();
+			$user->id = $row['id'];
+			$user->username = $row['username'];
+			$user->firstname = $row['firstname'];
+			$user->lastname = $row['lastname'];
+			$user->email = $row['email'];
+			$user->createdAt = $row['french_createdAt'];
+			$user->isAdmin = $row['isAdmin'];
+			$users[] = $user;
+		}
+		return $users;
+	}
+
+	public function getUserById(int $id): User
+	{
+		$stmt = $this->dbConnect->prepare("SELECT firstname, lastname FROM user WHERE id = :id");
+
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+
+		$row = $stmt->fetch();
+		$user = new User();
+		$user->firstname = $row['firstname'];
+		$user->lastname = $row['lastname'];
+		return $user;
+
+	}
+
+	public function setPermissionUser(int $id, bool $isAdmin): bool
+	{
+		$stmt = $this->dbConnect->prepare("UPDATE user SET isAdmin=:isAdmin WHERE id = :id");
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->bindParam(':isAdmin', $isAdmin, PDO::PARAM_BOOL);
+		$affectedLines = $stmt->execute();
+
+		return ($affectedLines > 0);
 	}
 }

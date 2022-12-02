@@ -34,7 +34,9 @@ $router->get('/dashboard/deletepost/:id', 'BackOfficeController#deletePost');
 $router->get('/dashboard/moderation', 'BackOfficeController#allCommentsToModerate');
 $router->get('/dashboard/validcomment/:id', 'BackOfficeController#validateComment');
 $router->get('/dashboard/deletecomment/:id', 'BackOfficeController#deleteComment');
-
+$router->get('/dashboard/users', 'BackOfficeController#allUser');
+$router->get('/dashboard/allowpermissionadmin/:id', 'BackOfficeController#allowPermissionAdmin');
+$router->get('/dashboard/denypermissionadmin/:id', 'BackOfficeController#denyPermissionAdmin');
 // try {
 //     $router->run();
 // } catch (TypeError $e) {
