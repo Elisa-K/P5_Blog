@@ -7,12 +7,15 @@ namespace Lib;
 use PDO;
 use Twig\Environment;
 use Lib\Services\FlashMessage;
+use Lib\Services\SessionManager;
 use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
     private array $messages = [];
+    protected ? SessionManager $session;
+
     public function __construct()
     {
         $db = new Database();
@@ -20,9 +23,11 @@ class Controller
         if (!isset($_SESSION['messages'])) {
             $_SESSION['messages'] = [];
         }
+
+        $this->session = new SessionManager();
     }
 
-    public function getDatabase(): ?PDO
+    public function getDatabase(): ? PDO
     {
         return $this->dbConnect;
     }
@@ -38,6 +43,7 @@ class Controller
             ]
         );
         $twig->addGlobal('flashMessage', new FlashMessage($_SESSION['messages']));
+        $twig->addGlobal('sessionUser', $this->session->get('user'));
         $twig->addExtension(new \Twig\Extension\DebugExtension());
         print_r($twig->render($path, $datas));
     }

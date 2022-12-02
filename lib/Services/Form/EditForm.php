@@ -34,7 +34,7 @@ class EditForm
     private function cleanData($data): void
     {
         foreach ($data as $fieldName => $value) {
-            if (!is_array($value)) {
+            if (!is_array($value) && !empty($value)) {
                 $this->data[$fieldName] = $this->cleanField($value);
             } else {
                 $this->data[$fieldName] = $value;

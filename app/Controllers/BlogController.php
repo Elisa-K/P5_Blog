@@ -7,6 +7,7 @@ namespace App\Controllers;
 use Lib\Controller;
 use Lib\Services\FormValidator;
 use App\Models\Entities\Comment;
+use Lib\Services\SessionManager;
 use Lib\Services\Form\EditUserForm;
 use Lib\Services\Form\EditCommentForm;
 use App\Models\Repositories\PostRepository;
@@ -63,7 +64,7 @@ class BlogController extends Controller
     public function signUp(): void
     {
         if ($this->isSubmit()) {
-            $userForm = new EditUserForm();
+            $userForm = new EditUserForm("register");
             if ($userForm->isValid()) {
                 $userRepository = new UserRepository($this->getDatabase());
                 $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
@@ -81,6 +82,38 @@ class BlogController extends Controller
 
     public function signIn(): void
     {
-        $this->view('front_office/sign_in.html.twig', ['route' => '/signin']);
+        if ($this->isSubmit()) {
+            $userForm = new EditUserForm("login");
+            if ($userForm->isValid()) {
+                $userRepository = new UserRepository($this->getDatabase());
+                $user = $userRepository->getUserByEmail($userForm->data['email'], $userForm->data['password']);
+                if (is_string($user)) {
+                    $error = ['error' => $user];
+                    $this->view('front_office/sign_in.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $error]);
+                } else {
+                    $this->session->set('user', $user);
+                    if ($user->isAdmin) {
+                        header('Location: /dashboard');
+                        exit();
+                    }
+                    header('Location: /');
+                    exit();
+                }
+            } else {
+                $errors = $userForm->getError();
+                $this->view('front_office/sign_in.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $errors]);
+            }
+        } else {
+            $this->view('front_office/sign_in.html.twig', ['route' => '/signin']);
+        }
     }
+
+    public function logOut()
+    {
+        $this->session->remove('user');
+        $this->session->clear();
+        header('Location: /');
+        exit();
+    }
+
 }

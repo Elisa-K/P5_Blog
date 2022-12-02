@@ -40,12 +40,28 @@
 						</li>
 					</ul>
 					<ul class="right navbar-nav ms-auto">
+					{% if sessionUser is not null %}
+
+						<li class="nav-item-right d-flex align-items-center user-menu mb-xl-0 mb-3">
+							<img src="/public/assets/back-office/img/user.png" alt="avatar" class=""/>
+							<span class="fw-bold fs-6 ms-2 me-4 ">{{ sessionUser.firstname|capitalize }} {{sessionUser.lastname|capitalize }}</span>
+						</li>
+						{% if sessionUser.isAdmin == TRUE %}
+							<li class="nav-item-right">
+								<a class="nav-link-right" href="/dashboard">Tableau de bord</a>
+							</li>
+						{% endif %}
+						<li class="nav-item-right">
+							<a class="nav-link-right btn-fill" href="/logout">Déconnexion</a>
+						</li>
+					{% else %}
 						<li class="nav-item-right">
 							<a class="nav-link-right" href="/signup">S'inscrire</a>
 						</li>
 						<li class="nav-item-right">
 							<a class="nav-link-right btn-fill" href="/signin">Connexion</a>
 						</li>
+					{% endif %}
 					</ul>
 				</div>
 			</div>

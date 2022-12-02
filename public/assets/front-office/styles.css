@@ -178,6 +178,10 @@ h4::before {
   cursor: pointer;
 }
 
+.user-menu img{
+  width: 35px;
+}
+
 .btn-fill {
   text-decoration: none;
   color: var(--green-dark);

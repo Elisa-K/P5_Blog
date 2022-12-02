@@ -20,6 +20,8 @@ $router->post('/blog/post/addComment/:id', "BlogController#addComment");
 $router->get('/signup', 'BlogController#signUp');
 $router->post('/signup', 'BlogController#signUp');
 $router->get('/signin', 'BlogController#signIn');
+$router->post('/signin', 'BlogController#signIn');
+$router->get('/logout', 'BlogController#logOut');
 
 // Back-Office (admin)
 $router->get('/dashboard', "BackOfficeController#dashboard");

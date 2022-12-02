@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Repositories;
 
 use PDO;
+use App\Models\Entities\User;
 
 class UserRepository
 {
@@ -30,5 +31,30 @@ class UserRepository
 		$affectedLines = $stmt->execute();
 
 		return ($affectedLines > 0);
+	}
+
+	public function getUserByEmail(string $email, string $password): User|string
+	{
+		$stmt = $this->dbConnect->prepare("SELECT id, username, firstname, lastname, email, password, DATE_FORMAT(createdAt, '%d/%m/%Y à %Hh%i') as french_createdAt, isAdmin FROM user WHERE email = :email");
+
+		$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+		$stmt->execute();
+		if ($stmt->rowCount() > 0) {
+			$row = $stmt->fetch();
+			if (password_verify($password, $row['password'])) {
+				$user = new User();
+				$user->username = $row['username'];
+				$user->firstname = $row['firstname'];
+				$user->lastname = $row['lastname'];
+				$user->email = $row['email'];
+				$user->createdAt = $row['french_createdAt'];
+				$user->isAdmin = $row['isAdmin'];
+				return $user;
+			} else {
+				return "Le mot de passe est invalide";
+			}
+		} else {
+			return "Aucun compte ne correspond à cette adresse email";
+		}
 	}
 }
