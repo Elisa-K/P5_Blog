@@ -8,18 +8,9 @@ use Lib\Services\SessionInterface;
 
 class SessionManager implements SessionInterface
 {
-	public function __construct(?int $cacheExpire = null, ?string $cacheLimiter = null)
+	public function __construct()
 	{
 		if (session_status() === PHP_SESSION_NONE) {
-
-			if ($cacheLimiter !== null) {
-				session_cache_limiter($cacheLimiter);
-			}
-
-			if ($cacheExpire !== null) {
-				session_cache_expire($cacheExpire);
-			}
-
 			session_start();
 		}
 	}
@@ -33,7 +24,7 @@ class SessionManager implements SessionInterface
 		return null;
 	}
 
-	public function set(string $key, $value): SessionInterface
+	public function set(string $key, mixed $value): SessionInterface
 	{
 		$_SESSION[$key] = $value;
 		return $this;
@@ -55,4 +46,5 @@ class SessionManager implements SessionInterface
 	{
 		return array_key_exists($key, $_SESSION);
 	}
+
 }

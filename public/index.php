@@ -1,13 +1,11 @@
 <?php
 
-
 use Lib\Router\Router;
 use App\Controllers\ErrorController;
-use Symfony\Component\Dotenv\Dotenv;
+
 
 require_once "../vendor/autoload.php";
-// $dotenv = new Dotenv();
-// $dotenv->load(__DIR__ . '/../.env');
+
 
 $router = new Router(filter_input(INPUT_GET, 'url'));
 
@@ -24,6 +22,7 @@ $router->post('/signin', 'BlogController#signIn');
 $router->get('/logout', 'BlogController#logOut');
 
 // Back-Office (admin)
+
 $router->get('/dashboard', "BackOfficeController#dashboard");
 $router->get('/dashboard/posts', 'BackOfficeController#allPosts');
 $router->get('/dashboard/newpost', 'BackOfficeController#addPost');
@@ -37,6 +36,7 @@ $router->get('/dashboard/deletecomment/:id', 'BackOfficeController#deleteComment
 $router->get('/dashboard/users', 'BackOfficeController#allUser');
 $router->get('/dashboard/allowpermissionadmin/:id', 'BackOfficeController#allowPermissionAdmin');
 $router->get('/dashboard/denypermissionadmin/:id', 'BackOfficeController#denyPermissionAdmin');
+
 // try {
 //     $router->run();
 // } catch (TypeError $e) {

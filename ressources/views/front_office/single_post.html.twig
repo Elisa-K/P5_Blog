@@ -13,21 +13,21 @@
 				<h2>{{ post.title }}</h2>
 				<div class="post-meta text-muted">
 					<span>
-						<i class="far fa-user"></i> 
+						<i class="far fa-user"></i>
 						{{ post.author }}
 					</span>
 					<span>
-						<i class="far fa-calendar"></i> 
+						<i class="far fa-calendar"></i>
 						{{ post.createdAt }}
 					</span>
 					{% if post.updatedAt is not null %}
 					<span>
 						<i class="fa-solid fa-pen"></i>
-						{{ post.updatedAt }}				
+						{{ post.updatedAt }}
 					</span>
 					{% endif %}
 					<span>
-						<i class="far fa-comment-alt"></i> 
+						<i class="far fa-comment-alt"></i>
 						{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
 					</span>
 				</div>
@@ -42,7 +42,7 @@
 			{# Liste des commentaires #}
 			<div class="list-comments">
 				<h5 class="text-muted">
-					<i class="far fa-comment-alt"></i> 
+					<i class="far fa-comment-alt"></i>
 					{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
 				</h5>
 				{% for comment in comments %}
@@ -60,12 +60,12 @@
 				</div>
 				{% endfor %}
 			</div>
-			{# TO DO : à n'afficher que si l'utilisateur est connecté #}
+			{% if sessionUser is not empty %}
 			<form action="/blog/post/addComment/{{ post.id }}#commentForm" method="post" id="commentForm">
 				<div class="mb-3">
 					<label for="comment" class="form-label">Ecrire un commentaire</label>
 					<textarea class="form-control" name="comment" rows="5" required></textarea>
-					{% if error is defined %}
+					{% if error is not null %}
 						<div class="text-danger">
 							{{ error.comment }}
 						</div>
@@ -75,6 +75,7 @@
           <button class="btn-fill" id="submitButton" type="submit">Envoyer le commentaire</button>
         </div>
 			</form>
+			{% endif %}
 		</div>
 	</div>
 

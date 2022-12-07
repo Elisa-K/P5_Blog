@@ -41,7 +41,6 @@
 					</ul>
 					<ul class="right navbar-nav ms-auto">
 					{% if sessionUser is not null %}
-
 						<li class="nav-item-right d-flex align-items-center user-menu mb-xl-0 mb-3">
 							<img src="/public/assets/back-office/img/user.png" alt="avatar" class=""/>
 							<span class="fw-bold fs-6 ms-2 me-4 ">{{ sessionUser.firstname|capitalize }} {{sessionUser.lastname|capitalize }}</span>
@@ -106,7 +105,14 @@
 						<p><a href="/#cv">Mon CV</a></p>
 						<p><a href="/blog">Blog</a></p>
 						<p><a href="/#contact">Contact</a></p>
-						<p><a href="/signin">Se connecter</a></p>
+						{% if sessionUser is not null %}
+							{% if sessionUser.isAdmin == TRUE %}
+								<p><a href="/dashboard">Tableau de bord</a></p>
+							{% endif %}
+							<p><a href="/logout">Se déconnecter</a></p>
+						{% else %}
+							<p><a href="/signin">Se connecter</a></p>
+						{% endif %}
 					</div>
 				</div>
 				<div class="copyright">

@@ -27,7 +27,7 @@ class EditPostForm extends EditForm
             'excerpt' => filter_input(INPUT_POST, 'excerpt'),
             'content' => filter_input(INPUT_POST, 'content')
         ];
-        if ($_FILES['featured-img']['error'] != 4) {
+        if (isset($_FILES['featured-img']) && $_FILES['featured-img']['error'] != 4) {
             $this->data['featuredImg'] = $_FILES['featured-img'];
         }
     }

@@ -48,4 +48,10 @@ class FlashMessage implements Countable, Iterator
     {
         return isset($this->messages[$this->key]);
     }
+
+    public function add(mixed $value): void
+    {
+        array_push($this->messages, $value);
+    }
+
 }

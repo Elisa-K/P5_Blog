@@ -39,32 +39,26 @@ class BackOfficeController extends Controller
     public function addPost(): void
     {
         // TO DO Vérifier utilisateur connecté et admin
-        if ($this->isSubmit()) {
-            $postForm = new EditPostForm("add");
-            if ($postForm->isValid()) {
-                $postRepository = new PostRepository($this->getDatabase());
-                $fileManager = new FileManager();
-                $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
-                $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], $this->session->get('user')->id);
-                $this->addFlashMessage(["success" => "Votre article a bien été publié !"]);
-                header('Location: /dashboard/posts');
-                exit();
-            } else {
-                $errors = $postForm->getError();
-                $this->view('back_office/new_post.html.twig', ["errors" => $errors, 'post' => $postForm->data]);
-            }
-        } else {
-            $this->view('back_office/new_post.html.twig');
+        $postForm = new EditPostForm("add");
+        if ($this->isSubmit() && $postForm->isValid()) {
+            $postRepository = new PostRepository($this->getDatabase());
+            $fileManager = new FileManager();
+            $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
+            $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], $this->session->get('user')->id);
+            $this->addFlashMessage(["success" => "Votre article a bien été publié !"]);
+            $this->redirect('/dashboard/posts');
         }
+        $this->view('back_office/new_post.html.twig', ["errors" => $postForm->getError(), 'post' => $postForm->data]);
+
     }
 
     public function updatePost(int $id): void
     {
         $postRepository = new PostRepository($this->getDatabase());
         $post = $postRepository->getPostById($id);
+        $postForm = new EditPostForm("update");
         // TO DO Vérifier utilisateur connecté et admin
         if ($this->isSubmit()) {
-            $postForm = new EditPostForm("update");
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
                 if ($postForm->data['featuredImg']) {
@@ -74,18 +68,15 @@ class BackOfficeController extends Controller
                 }
                 $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content']);
                 $this->addFlashMessage(["success" => "Votre article a bien été mise à jour !"]);
-
-                header('Location: /dashboard/posts');
-                exit();
+                $this->redirect('/dashboard/posts');
             } else {
-                $errors = $postForm->getError();
                 $post = $postForm->data;
                 $post['id'] = $id;
-                $this->view('back_office/update_post.html.twig', ["errors" => $errors, 'post' => $post]);
             }
-        } else {
-            $this->view('back_office/update_post.html.twig', ['post' => $post]);
         }
+
+        $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError()]);
+
     }
 
     public function deletePost(int $id): void
@@ -99,8 +90,7 @@ class BackOfficeController extends Controller
         } else {
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la suppression de l'article !"]);
         }
-        header('Location: /dashboard/posts');
-        exit();
+        $this->redirect('/dashboard/posts');
     }
 
     public function allCommentsToModerate(): void
@@ -118,8 +108,7 @@ class BackOfficeController extends Controller
         } else {
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la validation du commentaire !"]);
         }
-        header('Location: /dashboard/moderation');
-        exit();
+        $this->redirect('/dashboard/moderation');
     }
 
     public function deleteComment(int $id): void
@@ -130,8 +119,7 @@ class BackOfficeController extends Controller
         } else {
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la suppression du commentaire !"]);
         }
-        header('Location: /dashboard/moderation');
-        exit();
+        $this->redirect('/dashboard/moderation');
     }
 
     public function allUser(): void
@@ -151,8 +139,7 @@ class BackOfficeController extends Controller
         } else {
             $this->addFlashMessage(["error" => "Une erreur s'est produite. Le droit administrateur n'a pu être donné à $user->firstname $user->lastname"]);
         }
-        header('Location: /dashboard/users');
-        exit();
+        $this->redirect('/dashboard/users');
     }
 
     public function denyPermissionAdmin(int $id)
@@ -164,7 +151,6 @@ class BackOfficeController extends Controller
         } else {
             $this->addFlashMessage(["error" => "Une erreur s'est produite. Le droit administrateur n'a pu être retiré à $user->firstname $user->lastname"]);
         }
-        header('Location: /dashboard/users');
-        exit();
+        $this->redirect('/dashboard/users');
     }
 }

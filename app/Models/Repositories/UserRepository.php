@@ -33,7 +33,7 @@ class UserRepository
 		return ($affectedLines > 0);
 	}
 
-	public function getUserByEmail(string $email, string $password): User|string
+	public function getUserByEmail(string $email): ? User
 	{
 		$stmt = $this->dbConnect->prepare("SELECT id, username, firstname, lastname, email, password, createdAt, isAdmin FROM user WHERE email = :email");
 
@@ -41,21 +41,18 @@ class UserRepository
 		$stmt->execute();
 		if ($stmt->rowCount() > 0) {
 			$row = $stmt->fetch();
-			if (password_verify($password, $row['password'])) {
-				$user = new User();
-				$user->id = $row['id'];
-				$user->username = $row['username'];
-				$user->firstname = $row['firstname'];
-				$user->lastname = $row['lastname'];
-				$user->email = $row['email'];
-				$user->createdAt = $row['createdAt'];
-				$user->isAdmin = $row['isAdmin'];
-				return $user;
-			} else {
-				return "Le mot de passe est invalide";
-			}
+			$user = new User();
+			$user->id = $row['id'];
+			$user->username = $row['username'];
+			$user->firstname = $row['firstname'];
+			$user->lastname = $row['lastname'];
+			$user->email = $row['email'];
+			$user->password = $row['password'];
+			$user->createdAt = $row['createdAt'];
+			$user->isAdmin = $row['isAdmin'];
+			return $user;
 		} else {
-			return "Aucun compte ne correspond à cette adresse email";
+			return null;
 		}
 	}
 

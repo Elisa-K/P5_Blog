@@ -87,12 +87,6 @@
 								</a>
 							</li>
 							<li>
-								<a class="waves-effect waves-dark" href="/dashboard/profil" aria-expanded="false">
-									<i class="fa-solid fa-address-card"></i>
-									<span class="hide-menu">Mon profil</span>
-								</a>
-							</li>
-							<li>
 								<a class="waves-effect waves-dark" href="/" aria-expanded="false">
 									<i class="fa-solid fa-compass"></i>
 									<span class="hide-menu">Blog</span>
@@ -116,6 +110,7 @@
 				<div class="container-fluid">
 					{% block content %}{% endblock %}
 				</div>
+				{{ dump(flashMessage) }}
 				{% for messages in flashMessage %}
 					{% for type, message in messages %}
 						<div class="toast-container fixed-bottom w-100" style="z-index:100">

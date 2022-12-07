@@ -49,71 +49,52 @@ class BlogController extends Controller
             $commentRepository = new CommentRepository($this->getDatabase());
             $commentRepository->addComment($postId, $commentForm->data['comment'], $this->session->get('user')->id);
             $this->addFlashMessage(["success" => "Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié."]);
-            header('Location: /blog/post/' . $postId);
-            exit();
-        } else {
-            $postRepository = new PostRepository($this->getDatabase());
-            $post = $postRepository->getPostById($postId);
-            $commentRepository = new CommentRepository($this->getDatabase());
-            $comments = $commentRepository->getCommentsByPostId($postId);
-            $error = $commentForm->getError();
-            $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
+            $this->redirect('/blog/post/' . $postId);
         }
+        $postRepository = new PostRepository($this->getDatabase());
+        $post = $postRepository->getPostById($postId);
+        $commentRepository = new CommentRepository($this->getDatabase());
+        $comments = $commentRepository->getCommentsByPostId($postId);
+        $error = $commentForm->getError();
+        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
     }
 
     public function signUp(): void
     {
-        if ($this->isSubmit()) {
-            $userForm = new EditUserForm("register");
-            if ($userForm->isValid()) {
-                $userRepository = new UserRepository($this->getDatabase());
-                $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
-                $this->addFlashMessage(["success" => "Votre compte a bien été créé. Vous pouvez maintenant vous connecter."]);
-                header('Location: /signin');
-                exit();
-            } else {
-                $errors = $userForm->getError();
-                $this->view('front_office/sign_up.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $errors]);
-            }
-        } else {
-            $this->view('front_office/sign_up.html.twig', ['route' => '/signup']);
+        $userForm = new EditUserForm("register");
+        if ($this->isSubmit() && $userForm->isValid()) {
+            $userRepository = new UserRepository($this->getDatabase());
+            $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
+            $this->addFlashMessage(["success" => "Votre compte a bien été créé. Vous pouvez maintenant vous connecter."]);
+            $this->redirect('/signin');
         }
+        $this->view('front_office/sign_up.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $userForm->getError()]);
+
     }
 
     public function signIn(): void
     {
-        if ($this->isSubmit()) {
-            $userForm = new EditUserForm("login");
-            if ($userForm->isValid()) {
-                $userRepository = new UserRepository($this->getDatabase());
-                $user = $userRepository->getUserByEmail($userForm->data['email'], $userForm->data['password']);
-                if (is_string($user)) {
-                    $error = ['error' => $user];
-                    $this->view('front_office/sign_in.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $error]);
-                } else {
-                    $this->session->set('user', $user);
-                    if ($user->isAdmin) {
-                        header('Location: /dashboard');
-                        exit();
-                    }
-                    header('Location: /');
-                    exit();
-                }
-            } else {
-                $errors = $userForm->getError();
-                $this->view('front_office/sign_in.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $errors]);
+        $userForm = new EditUserForm("login");
+        $errors = [];
+        if ($this->isSubmit() && $userForm->isValid()) {
+            $userRepository = new UserRepository($this->getDatabase());
+            $user = $userRepository->getUserByEmail($userForm->data['email']);
+            if ($user && password_verify($userForm->data['password'], $user->password)) {
+                $this->session->set('user', $user);
+                $user->isAdmin ? $this->redirect('/dashboard') : $this->redirect('/');
             }
+            $errors = ['error' => 'Adresse mail inconnu ou mot de passe invalide'];
         } else {
-            $this->view('front_office/sign_in.html.twig', ['route' => '/signin']);
+            $errors = $userForm->getError();
         }
+        $this->view('front_office/sign_in.html.twig', ['route' => '/signin', 'user' => $userForm->data, 'errors' => $errors]);
+
     }
 
     public function logOut()
     {
         $this->session->remove('user');
-        $this->session->clear();
-        header('Location: /');
-        exit();
+        $this->redirect('/');
     }
 
 }

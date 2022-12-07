@@ -11,7 +11,7 @@
 					<img src="/public/assets/front-office/img/logo.png" alt="EK" class="mx-auto d-block" />
 					<h3 class="mb-4 text-center">Inscription</h3>
 					<form action="/signup" method="POST">
-						{% if errors is defined %}
+						{% if errors is not empty %}
 							<div class="alert alert-danger" role="alert">
 								<ul>
 									{% for message in errors %}

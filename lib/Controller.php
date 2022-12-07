@@ -13,17 +13,17 @@ use Twig\Loader\FilesystemLoader;
 class Controller
 {
     private ? PDO $dbConnect;
-    private array $messages = [];
-    protected ? SessionManager $session;
+    public ? SessionManager $session;
+    public FlashMessage $flashMessage;
 
     public function __construct()
     {
         $db = new Database();
         $this->dbConnect = $db->getConnection();
         $this->session = new SessionManager();
-        if (!isset($_SESSION['messages'])) {
-            $_SESSION['messages'] = [];
-        }
+        if (!$this->session->has('messages'))
+            $this->session->set('messages', array());
+        $this->flashMessage = new FlashMessage($_SESSION['messages']);
     }
 
     public function getDatabase(): ? PDO
@@ -41,10 +41,17 @@ class Controller
                 'cache' => false,
             ]
         );
-        $twig->addGlobal('flashMessage', new FlashMessage($_SESSION['messages']));
+
+        $twig->addGlobal('flashMessage', $this->flashMessage);
         $twig->addGlobal('sessionUser', $this->session->get('user'));
         $twig->addExtension(new \Twig\Extension\DebugExtension());
         print_r($twig->render($path, $datas));
+    }
+
+    public function redirect(string $path)
+    {
+        header('Location: ' . $path);
+        exit();
     }
 
     public function isSubmit(): bool
@@ -52,8 +59,8 @@ class Controller
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function addFlashMessage(array $message)
+    public function addFlashMessage(array $message): void
     {
-        array_push($_SESSION['messages'], $message);
+        $this->flashMessage->add($message);
     }
 }
