@@ -9,7 +9,7 @@ use App\Models\Entities\Comment;
 
 class CommentRepository
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
 
     public function __construct($dbConnect)
     {
@@ -61,6 +61,14 @@ class CommentRepository
             $comments[] = $comment;
         }
         return $comments;
+    }
+
+    public function getNbCommentToModerate(): int
+    {
+        $stmt = $this->dbConnect->query("SELECT count(id) as nb_comment FROM comment WHERE isValid = FALSE");
+        $row = $stmt->fetch();
+        $nbComment = $row['nb_comment'];
+        return $nbComment;
     }
 
     public function validateComment(int $id): bool

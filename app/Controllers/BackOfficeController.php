@@ -22,7 +22,15 @@ class BackOfficeController extends Controller
     }
     public function dashboard(): void
     {
-        $this->view('back_office/dashboard.html.twig', ['route' => '/dashboard']);
+        $postRepository = new PostRepository($this->getDatabase());
+        $userRepository = new UserRepository($this->getDatabase());
+        $commentRepository = new CommentRepository($this->getDatabase());
+        $nbPost = $postRepository->getNbPosts();
+        $lastPosts = $postRepository->getAllPosts(0, 5);
+        $nbUser = $userRepository->getNbUser();
+        $nbAdmin = $userRepository->getNbAdmin();
+        $nbComment = $commentRepository->getNbCommentToModerate();
+        $this->view('back_office/dashboard.html.twig', ['route' => '/dashboard', 'nbPost' => $nbPost, 'lastPosts' => $lastPosts, 'nbComment' => $nbComment, 'nbUser' => $nbUser, 'nbAdmin' => $nbAdmin]);
     }
 
     public function allPosts(): void

@@ -100,4 +100,20 @@ class UserRepository
 
 		return ($affectedLines > 0);
 	}
+
+	public function getNbUser(): int
+	{
+		$stmt = $this->dbConnect->query("SELECT count(id) as nb_user FROM user");
+		$row = $stmt->fetch();
+		$nbUser = $row['nb_user'];
+		return $nbUser;
+	}
+
+	public function getNbAdmin(): int
+	{
+		$stmt = $this->dbConnect->query("SELECT count(id) as nb_admin FROM user WHERE isAdmin = TRUE");
+		$row = $stmt->fetch();
+		$nbAdmin = $row['nb_admin'];
+		return $nbAdmin;
+	}
 }
