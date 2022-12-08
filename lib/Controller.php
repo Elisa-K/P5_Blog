@@ -59,6 +59,11 @@ class Controller
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
+    public function checkIsAdmin(): bool
+    {
+        return (bool) $this->session->get('user')->isAdmin;
+    }
+
     public function addFlashMessage(array $message): void
     {
         $this->flashMessage->add($message);

@@ -110,7 +110,6 @@
 				<div class="container-fluid">
 					{% block content %}{% endblock %}
 				</div>
-				{{ dump(flashMessage) }}
 				{% for messages in flashMessage %}
 					{% for type, message in messages %}
 						<div class="toast-container fixed-bottom w-100" style="z-index:100">

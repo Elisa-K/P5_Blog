@@ -10,7 +10,7 @@ use App\Models\Entities\Post;
 
 class PostRepository
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
 
     public function __construct($dbConnect)
     {
@@ -87,13 +87,14 @@ class PostRepository
         return ($affectedLines > 0);
     }
 
-    public function updatePost(int $id, string $title, string $excerpt, string $featuredImg, string $content): bool
+    public function updatePost(int $id, string $title, string $excerpt, string $featuredImg, string $content, int $author): bool
     {
-        $stmt = $this->dbConnect->prepare("UPDATE post SET title=:title, excerpt=:excerpt, featuredImage=:featuredImage, content=:content, updateAt=NOW() WHERE id=:id");
+        $stmt = $this->dbConnect->prepare("UPDATE post SET title=:title, excerpt=:excerpt, featuredImage=:featuredImage, content=:content, user_id=:author updateAt=NOW() WHERE id=:id");
         $stmt->bindParam(':title', $title, PDO::PARAM_STR);
         $stmt->bindParam(':excerpt', $excerpt, PDO::PARAM_STR);
         $stmt->bindParam(':featuredImage', $featuredImg, PDO::PARAM_STR);
         $stmt->bindParam(':content', $content, PDO::PARAM_STR);
+        $stmt->bindParam(':author', $author, PDO::PARAM_INT);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $affectedLines = $stmt->execute();
 

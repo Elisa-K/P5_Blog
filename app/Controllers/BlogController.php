@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Lib\Controller;
-use Lib\Services\FormValidator;
-use App\Models\Entities\Comment;
-use Lib\Services\SessionManager;
 use Lib\Services\Form\EditUserForm;
 use Lib\Services\Form\EditCommentForm;
 use App\Models\Repositories\PostRepository;

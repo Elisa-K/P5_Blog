@@ -14,6 +14,12 @@ use App\Models\Repositories\CommentRepository;
 
 class BackOfficeController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if (!$this->checkIsAdmin())
+            $this->redirect('/');
+    }
     public function dashboard(): void
     {
         $this->view('back_office/dashboard.html.twig', ['route' => '/dashboard']);
@@ -66,7 +72,7 @@ class BackOfficeController extends Controller
                     $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
                     $fileManager->deleteImg($post->featuredImg);
                 }
-                $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content']);
+                $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], $this->session->get('user')->id);
                 $this->addFlashMessage(["success" => "Votre article a bien été mise à jour !"]);
                 $this->redirect('/dashboard/posts');
             } else {
