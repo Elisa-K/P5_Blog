@@ -41,6 +41,25 @@
 			<hr>
 			{# Liste des commentaires #}
 			<div class="list-comments">
+			{% if sessionUser is not empty %}
+				<form action="/blog/post/addComment/{{ post.id }}#commentForm" method="post" id="commentForm">
+					<div class="mb-3">
+						<label for="comment" class="form-label">Ecrire un commentaire</label>
+						<textarea class="form-control" name="comment" rows="5" required></textarea>
+						{% if error is not null %}
+							<div class="text-danger">
+								{{ error.comment }}
+							</div>
+						{% endif %}
+					</div>
+					<div class="d-grid">
+						<button class="btn-fill" id="submitButton" type="submit">Envoyer le commentaire</button>
+					</div>
+				</form>
+			{% else %}
+				<p class="lead text-center fw-bold">Pour poster un commentaire, veuillez-vous <a href="/singin" class="text-primary">connecter</a>.</p>
+			{% endif %}
+				<hr>
 				<h5 class="text-muted">
 					<i class="far fa-comment-alt"></i>
 					{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
@@ -60,22 +79,7 @@
 				</div>
 				{% endfor %}
 			</div>
-			{% if sessionUser is not empty %}
-			<form action="/blog/post/addComment/{{ post.id }}#commentForm" method="post" id="commentForm">
-				<div class="mb-3">
-					<label for="comment" class="form-label">Ecrire un commentaire</label>
-					<textarea class="form-control" name="comment" rows="5" required></textarea>
-					{% if error is not null %}
-						<div class="text-danger">
-							{{ error.comment }}
-						</div>
-					{% endif %}
-				</div>
-				<div class="d-grid">
-          <button class="btn-fill" id="submitButton" type="submit">Envoyer le commentaire</button>
-        </div>
-			</form>
-			{% endif %}
+
 		</div>
 	</div>
 
