@@ -75,15 +75,10 @@ h2 {
   background-color: var(--green-dark) !important;
 }
 
-.intro-h1::before {
-  content: '';
-  width: 68%;
-  height: 10px;
-  background-color: var(--green-light);
-  position: absolute;
-  top: 0.75em;
-  left: -5px;
-  z-index: -1;
+.intro-h1{
+  font-size: 5em;
+  color: var(--green-dark);
+  font-weight: 600;
 }
 
 .variations-h1::before {
@@ -118,6 +113,16 @@ h4::before {
   top: 0.7em;
   left: 0;
   z-index: -1;
+}
+
+.catch-phrase{
+  font-weight: bold;
+  font-size: 2em;
+  position: relative;
+}
+
+.intro .social-media img {
+  width: 40px;
 }
 
 .front-page {
@@ -245,7 +250,9 @@ h4::before {
 }
 
 .intro .intro-img img {
-  width: 100%;
+  width: 80%;
+  display: block;
+  margin: auto;
 }
 
 .intro .scroll img {
@@ -255,6 +262,12 @@ h4::before {
 
 .intro .scroll:hover span {
   font-weight: bold;
+}
+
+.contact-bloc {
+  padding: 35px;
+  background-color: var(--rose-light);
+  border-radius: 0px 100px 0px 120px;
 }
 
 .clients {
@@ -354,12 +367,6 @@ h4::before {
 .service .item:hover {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
-}
-
-.update-news {
-  padding: 80px;
-  background-color: var(--green-light);
-  border-radius: 0px 100px 0px 120px;
 }
 
 .update-news .news-form {
@@ -803,12 +810,16 @@ footer .footer-wrap .newsletter #subscribe button {
   }
 
   .intro .intro-img {
-    width: 55%;
+    width: 35%;
     padding: 0;
   }
 
   .intro .intro-text {
-    width: 45%;
+    width: 65%;
+  }
+
+  .contact-bloc {
+    padding: 80px;
   }
 
   .intro .scroll {
@@ -904,7 +915,7 @@ footer .footer-wrap .newsletter #subscribe button {
     font-size: 3em;
   }
 
-  .update-news {
+  .contact-bloc {
     position: relative;
     margin-bottom: 120px;
   }
@@ -955,11 +966,11 @@ footer .footer-wrap .newsletter #subscribe button {
 
 @media (min-width: 1200px) {
   .intro .intro-img {
-    width: 65%;
+    width: 30%;
   }
 
   .intro .intro-text {
-    width: 35%;
+    width: 70%;
   }
 
   .variations {

@@ -41,6 +41,9 @@ class BlogController extends Controller
 
     public function addComment(int $postId): void
     {
+        if (!$this->checkUserConnect())
+            $this->redirect('/');
+
         $commentForm = new EditCommentForm();
         if ($commentForm->isValid()) {
             $commentRepository = new CommentRepository($this->getDatabase());
@@ -52,8 +55,7 @@ class BlogController extends Controller
         $post = $postRepository->getPostById($postId);
         $commentRepository = new CommentRepository($this->getDatabase());
         $comments = $commentRepository->getCommentsByPostId($postId);
-        $error = $commentForm->getError();
-        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $error]);
+        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $commentForm->getError()]);
     }
 
     public function signUp(): void

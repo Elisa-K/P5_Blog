@@ -59,6 +59,10 @@ class Controller
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
+    public function checkUserConnect(): bool
+    {
+        return $this->session->has('user');
+    }
     public function checkIsAdmin(): bool
     {
         return (bool) $this->session->get('user')->isAdmin;

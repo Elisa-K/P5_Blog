@@ -12,6 +12,7 @@ $router = new Router(filter_input(INPUT_GET, 'url'));
 // Routes
 // Front-Office
 $router->get('/', "HomeController#index");
+$router->post('/sendmail', "HomeController#sendMail");
 $router->get('/blog', "BlogController#allPosts");
 $router->get('/blog/post/:id', "BlogController#getPost");
 $router->post('/blog/post/addComment/:id', "BlogController#addComment");
