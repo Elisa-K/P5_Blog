@@ -1,7 +1,9 @@
 <?php
 
 use Lib\Router\Router;
-use App\Controllers\ErrorController;
+use Lib\Exceptions\AccessDeniedException;
+use Lib\Exceptions\UnauthorizedException;
+use Lib\Exceptions\RouteNotFoundException;
 
 
 require_once "../vendor/autoload.php";
@@ -38,11 +40,16 @@ $router->get('/dashboard/users', 'BackOfficeController#allUser');
 $router->get('/dashboard/allowpermissionadmin/:id', 'BackOfficeController#allowPermissionAdmin');
 $router->get('/dashboard/denypermissionadmin/:id', 'BackOfficeController#denyPermissionAdmin');
 
-// try {
-//     $router->run();
-// } catch (TypeError $e) {
-//     $errorController = new ErrorController();
-//     $errorController->error404();
-// }
+$router->get('/error/:code', "ErrorController#error");
 
-$router->run();
+try {
+	$router->run();
+} catch (RouteNotFoundException) {
+	header('location: /error/404');
+} catch (TypeError $e) {
+	header('location: /error/404');
+} catch (UnauthorizedException) {
+	header('location: /signin');
+} catch (AccessDeniedException) {
+	header('location: /error/403');
+}

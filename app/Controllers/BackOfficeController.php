@@ -17,8 +17,7 @@ class BackOfficeController extends Controller
     public function __construct()
     {
         parent::__construct();
-        if (!$this->checkIsAdmin())
-            $this->redirect('/');
+        $this->checkIsAdmin();
     }
     public function dashboard(): void
     {

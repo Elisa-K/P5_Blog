@@ -9,6 +9,8 @@ use Twig\Environment;
 use Lib\Services\FlashMessage;
 use Lib\Services\SessionManager;
 use Twig\Loader\FilesystemLoader;
+use Lib\Exceptions\AccessDeniedException;
+use Lib\Exceptions\UnauthorizedException;
 
 class Controller
 {
@@ -59,13 +61,17 @@ class Controller
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function checkUserConnect(): bool
+    public function checkUserConnect(): void
     {
-        return $this->session->has('user');
+        if (!$this->session->has('user')) {
+            throw new UnauthorizedException();
+        }
     }
-    public function checkIsAdmin(): bool
+    public function checkIsAdmin(): void
     {
-        return (bool) $this->session->get('user')->isAdmin;
+        $this->checkUserConnect();
+        if (!(bool) $this->session->get('user')->isAdmin)
+            throw new AccessDeniedException();
     }
 
     public function addFlashMessage(array $message): void

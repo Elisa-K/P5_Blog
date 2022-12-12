@@ -41,8 +41,7 @@ class BlogController extends Controller
 
     public function addComment(int $postId): void
     {
-        if (!$this->checkUserConnect())
-            $this->redirect('/');
+        $this->checkUserConnect();
 
         $commentForm = new EditCommentForm();
         if ($commentForm->isValid()) {

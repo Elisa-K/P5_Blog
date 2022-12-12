@@ -42,7 +42,9 @@ class Router
                 if ($route->match($this->url)) {
                     return $route->call();
                 }
+
             }
         }
+        throw new RouteNotFoundException();
     }
 }
