@@ -71,7 +71,6 @@ class BackOfficeController extends Controller
         $postRepository = new PostRepository($this->getDatabase());
         $post = $postRepository->getPostById($id);
         $postForm = new EditPostForm("update");
-        // TO DO Vérifier utilisateur connecté et admin
         if ($this->isSubmit()) {
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
@@ -88,7 +87,6 @@ class BackOfficeController extends Controller
                 $post['id'] = $id;
             }
         }
-
         $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError()]);
 
     }
