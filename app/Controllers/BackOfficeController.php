@@ -83,8 +83,7 @@ class BackOfficeController extends Controller
                 $this->addFlashMessage(["success" => "Votre article a bien été mise à jour !"]);
                 $this->redirect('/dashboard/posts');
             } else {
-                $post = $postForm->data;
-                $post['id'] = $id;
+                $post = array_merge((array) $post, $postForm->data);
             }
         }
         $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError()]);
