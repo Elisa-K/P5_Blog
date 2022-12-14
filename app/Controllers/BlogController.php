@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Lib\Controller;
-use Lib\Services\Form\EditUserForm;
-use Lib\Services\Form\EditCommentForm;
+use App\Form\EditUserForm;
+use App\Form\EditCommentForm;
 use App\Models\Repositories\PostRepository;
 use App\Models\Repositories\UserRepository;
 use App\Models\Repositories\CommentRepository;

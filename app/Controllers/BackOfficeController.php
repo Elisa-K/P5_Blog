@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Lib\Controller;
-use App\Models\Entities\Post;
 use Lib\Services\FileManager;
-use Lib\Services\Form\EditPostForm;
+use App\Form\EditPostForm;
 use App\Models\Repositories\PostRepository;
 use App\Models\Repositories\UserRepository;
 use App\Models\Repositories\CommentRepository;

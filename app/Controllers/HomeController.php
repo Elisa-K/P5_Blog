@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use Lib\Controller;
 use Lib\Services\Mail;
-use Lib\Services\Form\EditMailForm;
+use App\Form\EditMailForm;
 
 class HomeController extends Controller
 {

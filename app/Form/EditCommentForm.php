@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Lib\Services\Form;
+namespace App\Form;
+
+use Lib\Services\Form\EditForm;
 
 class EditCommentForm extends EditForm
 {
