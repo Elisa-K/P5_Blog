@@ -12,10 +12,10 @@ class ErrorController extends Controller
     {
         switch ($code) {
             case "404":
-                $this->view('404.html.twig');
+                $this->view('front_office/404.html.twig');
                 break;
             case "403":
-                $this->view('403.html.twig');
+                $this->view('front_office/403.html.twig');
                 break;
         }
 
