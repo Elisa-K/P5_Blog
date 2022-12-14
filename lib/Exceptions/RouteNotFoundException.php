@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lib\Exceptions;
 
-class RouteNotFoundException extends \Exception
-{
+use Exception;
 
+class RouteNotFoundException extends Exception
+{
 }

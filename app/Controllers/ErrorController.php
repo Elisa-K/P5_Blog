@@ -18,6 +18,5 @@ class ErrorController extends Controller
                 $this->view('front_office/403.html.twig');
                 break;
         }
-
     }
 }

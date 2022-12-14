@@ -9,7 +9,7 @@ use App\Models\Entities\Comment;
 
 class CommentRepository
 {
-    private ? PDO $dbConnect;
+    private ?PDO $dbConnect;
 
     public function __construct($dbConnect)
     {
@@ -48,6 +48,7 @@ class CommentRepository
     public function getCommentsToModerate(): array
     {
         $stmt = $this->dbConnect->query("SELECT comment.id, comment.content, comment.isValid, post.title, user.username, DATE_FORMAT(comment.createdAt, '%d/%m/%Y à %Hh%i') as french_createdAt FROM comment INNER JOIN post on post.id=comment.post_id INNER JOIN user on user.id=comment.user_id WHERE comment.isValid is FALSE ORDER BY comment.createdAt DESC");
+
         $comments = [];
         while ($row = $stmt->fetch()) {
             $comment = new Comment();
@@ -57,24 +58,28 @@ class CommentRepository
             $comment->createdAt = $row['french_createdAt'];
             $comment->isValid = $row['isValid'];
             $comment->postTitle = $row['title'];
-
             $comments[] = $comment;
         }
+
         return $comments;
     }
 
     public function getNbCommentToModerate(): int
     {
         $stmt = $this->dbConnect->query("SELECT count(id) as nb_comment FROM comment WHERE isValid = FALSE");
+
         $row = $stmt->fetch();
         $nbComment = $row['nb_comment'];
+
         return $nbComment;
     }
 
     public function validateComment(int $id): bool
     {
         $stmt = $this->dbConnect->prepare("UPDATE comment SET isValid=1 WHERE id=:id");
+
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
         $affectedLines = $stmt->execute();
 
         return ($affectedLines > 0);
@@ -83,7 +88,9 @@ class CommentRepository
     public function deleteComment(int $id): bool
     {
         $stmt = $this->dbConnect->prepare("DELETE FROM comment WHERE id = :id");
+
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
         $affectedLines = $stmt->execute();
 
         return ($affectedLines > 0);

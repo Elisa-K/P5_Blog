@@ -8,7 +8,7 @@ use Lib\Services\Form\EditForm;
 
 class EditPostForm extends EditForm
 {
-    public const dataFR = [
+    public const DATA_FR = [
         'title' => 'Le titre',
         'excerpt' => 'Le chapô',
         'content' => 'Le contenu de l\'article',
@@ -22,16 +22,18 @@ class EditPostForm extends EditForm
         if ($method == "update") {
             $this->setRulesUpdate();
         }
-        parent::__construct(self::dataFR);
 
         $this->data = [
             'title' => filter_input(INPUT_POST, 'title'),
             'excerpt' => filter_input(INPUT_POST, 'excerpt'),
             'content' => filter_input(INPUT_POST, 'content')
         ];
+
         if (isset($_FILES['featured-img']) && $_FILES['featured-img']['error'] != 4) {
             $this->data['featuredImg'] = $_FILES['featured-img'];
         }
+
+        parent::__construct(self::DATA_FR);
     }
 
     private function setRulesAdd()

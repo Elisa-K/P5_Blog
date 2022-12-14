@@ -1,17 +1,18 @@
 <?php
 
 use Lib\Router\Router;
-use Lib\Exceptions\AccessDeniedException;
-use Lib\Exceptions\UnauthorizedException;
-use Lib\Exceptions\RouteNotFoundException;
-
+use Lib\Exceptions\{AccessDeniedException, UnauthorizedException, RouteNotFoundException};
+use Symfony\Component\Dotenv\Dotenv;
 
 require_once "../vendor/autoload.php";
 
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__ . '/../.env');
 
 $router = new Router(filter_input(INPUT_GET, 'url'));
 
 // Routes
+
 // Front-Office
 $router->get('/', "HomeController#index");
 $router->post('/sendmail', "HomeController#sendMail");
@@ -40,16 +41,17 @@ $router->get('/dashboard/users', 'BackOfficeController#allUser');
 $router->get('/dashboard/allowpermissionadmin/:id', 'BackOfficeController#allowPermissionAdmin');
 $router->get('/dashboard/denypermissionadmin/:id', 'BackOfficeController#denyPermissionAdmin');
 
+//Erreurs
 $router->get('/error/:code', "ErrorController#error");
 
 try {
-	$router->run();
+    $router->run();
 } catch (RouteNotFoundException) {
-	header('location: /error/404');
+    header('location: /error/404');
 } catch (TypeError $e) {
-	header('location: /error/404');
+    header('location: /error/404');
 } catch (UnauthorizedException) {
-	header('location: /signin');
+    header('location: /signin');
 } catch (AccessDeniedException) {
-	header('location: /error/403');
+    header('location: /error/403');
 }

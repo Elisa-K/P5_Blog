@@ -12,11 +12,13 @@ class FileManager
     {
         $this->pathImg = "assets/featured-img/";
     }
+
     public function saveImg(array $image): string
     {
         $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
         $name = uniqid("img_") . '_' . time() . '.' . $extension;
         move_uploaded_file($image['tmp_name'], $this->pathImg . $name);
+
         return $name;
     }
 

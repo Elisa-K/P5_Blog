@@ -104,7 +104,6 @@ class EditForm
                             break 2;
                         }
                         break;
-
                 }
             }
         }
@@ -151,7 +150,6 @@ class EditForm
 
     private function checkIsUnique(string $field, string $value, string $table): bool
     {
-
         $db = new Database();
         $dbConnect = $db->getConnection();
         $stmt = $dbConnect->query("SELECT * FROM $table WHERE $field = '" . $value . "'");

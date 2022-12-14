@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lib\Router;
 
-use TypeError;
 use Lib\Router\Route;
 use Lib\Exceptions\RouteNotFoundException;
 
@@ -42,7 +41,6 @@ class Router
                 if ($route->match($this->url)) {
                     return $route->call();
                 }
-
             }
         }
         throw new RouteNotFoundException();

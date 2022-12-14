@@ -6,16 +6,14 @@ namespace Lib;
 
 use PDO;
 use Twig\Environment;
-use Lib\Services\FlashMessage;
-use Lib\Services\SessionManager;
+use Lib\Services\{FlashMessage, SessionManager};
 use Twig\Loader\FilesystemLoader;
-use Lib\Exceptions\AccessDeniedException;
-use Lib\Exceptions\UnauthorizedException;
+use Lib\Exceptions\{AccessDeniedException, UnauthorizedException};
 
 class Controller
 {
-    private ? PDO $dbConnect;
-    public ? SessionManager $session;
+    private ?PDO $dbConnect;
+    public ?SessionManager $session;
     public FlashMessage $flashMessage;
 
     public function __construct()
@@ -23,12 +21,13 @@ class Controller
         $db = new Database();
         $this->dbConnect = $db->getConnection();
         $this->session = new SessionManager();
-        if (!$this->session->has('messages'))
+        if (!$this->session->has('messages')) {
             $this->session->set('messages', array());
+        }
         $this->flashMessage = new FlashMessage($_SESSION['messages']);
     }
 
-    public function getDatabase(): ? PDO
+    public function getDatabase(): ?PDO
     {
         return $this->dbConnect;
     }
@@ -70,8 +69,9 @@ class Controller
     public function checkIsAdmin(): void
     {
         $this->checkUserConnect();
-        if (!(bool) $this->session->get('user')->isAdmin)
+        if (!(bool) $this->session->get('user')->isAdmin) {
             throw new AccessDeniedException();
+        }
     }
 
     public function addFlashMessage(array $message): void

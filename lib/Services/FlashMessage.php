@@ -26,6 +26,7 @@ class FlashMessage implements Countable, Iterator
     {
         $message = current($this->messages);
         unset($this->messages[$this->key]);
+
         return $message;
     }
 
@@ -53,5 +54,4 @@ class FlashMessage implements Countable, Iterator
     {
         array_push($this->messages, $value);
     }
-
 }

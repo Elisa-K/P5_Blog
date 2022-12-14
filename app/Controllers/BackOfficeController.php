@@ -7,9 +7,7 @@ namespace App\Controllers;
 use Lib\Controller;
 use Lib\Services\FileManager;
 use App\Form\EditPostForm;
-use App\Models\Repositories\PostRepository;
-use App\Models\Repositories\UserRepository;
-use App\Models\Repositories\CommentRepository;
+use App\Models\Repositories\{PostRepository, UserRepository, CommentRepository};
 
 class BackOfficeController extends Controller
 {
@@ -28,17 +26,14 @@ class BackOfficeController extends Controller
         $nbUser = $userRepository->getNbUser();
         $nbAdmin = $userRepository->getNbAdmin();
         $nbComment = $commentRepository->getNbCommentToModerate();
+
         $this->view('back_office/dashboard.html.twig', ['route' => '/dashboard', 'nbPost' => $nbPost, 'lastPosts' => $lastPosts, 'nbComment' => $nbComment, 'nbUser' => $nbUser, 'nbAdmin' => $nbAdmin]);
     }
 
     public function allPosts(): void
     {
         $postRepository = new PostRepository($this->getDatabase());
-        if ((filter_input(INPUT_GET, 'page'))) {
-            $page = filter_input(INPUT_GET, 'page');
-        } else {
-            $page = 1;
-        }
+        $page = filter_input(INPUT_GET, 'page') ? filter_input(INPUT_GET, 'page') : 1;
         $nbPostPage = 20;
         $start = ($page - 1) * $nbPostPage;
         $nbPost = $postRepository->getNbPosts();
@@ -50,18 +45,20 @@ class BackOfficeController extends Controller
 
     public function addPost(): void
     {
-        // TO DO Vérifier utilisateur connecté et admin
         $postForm = new EditPostForm("add");
+
         if ($this->isSubmit() && $postForm->isValid()) {
             $postRepository = new PostRepository($this->getDatabase());
             $fileManager = new FileManager();
+
             $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
             $postRepository->addPost($postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], $this->session->get('user')->id);
+
             $this->addFlashMessage(["success" => "Votre article a bien été publié !"]);
             $this->redirect('/dashboard/posts');
         }
-        $this->view('back_office/new_post.html.twig', ["errors" => $postForm->getError(), 'post' => $postForm->data]);
 
+        $this->view('back_office/new_post.html.twig', ["errors" => $postForm->getError(), 'post' => $postForm->data]);
     }
 
     public function updatePost(int $id): void
@@ -69,6 +66,7 @@ class BackOfficeController extends Controller
         $postRepository = new PostRepository($this->getDatabase());
         $post = $postRepository->getPostById($id);
         $postForm = new EditPostForm("update");
+
         if ($this->isSubmit()) {
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
@@ -84,14 +82,15 @@ class BackOfficeController extends Controller
                 $post = array_merge((array) $post, $postForm->data);
             }
         }
-        $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError()]);
 
+        $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError()]);
     }
 
     public function deletePost(int $id): void
     {
         $postRepository = new PostRepository($this->getDatabase());
         $featuredImg = $postRepository->getFeaturedImg($id);
+
         if ($postRepository->deletePost($id)) {
             $fileManager = new FileManager();
             $fileManager->deleteImg($featuredImg);
@@ -99,6 +98,7 @@ class BackOfficeController extends Controller
         } else {
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la suppression de l'article !"]);
         }
+
         $this->redirect('/dashboard/posts');
     }
 
@@ -106,28 +106,33 @@ class BackOfficeController extends Controller
     {
         $commentRepository = new CommentRepository($this->getDatabase());
         $comments = $commentRepository->getCommentsToModerate();
+
         $this->view('back_office/moderate_comment.html.twig', ['route' => '/dashboard/moderation', 'comments' => $comments]);
     }
 
     public function validateComment(int $id): void
     {
         $commentRepository = new CommentRepository($this->getDatabase());
+
         if ($commentRepository->validateComment($id)) {
             $this->addFlashMessage(["success" => "Le commentaire a bien été validé !"]);
         } else {
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la validation du commentaire !"]);
         }
+
         $this->redirect('/dashboard/moderation');
     }
 
     public function deleteComment(int $id): void
     {
         $commentRepository = new CommentRepository($this->getDatabase());
+
         if ($commentRepository->deleteComment($id)) {
             $this->addFlashMessage(["success" => "Le commentaire a bien été supprimé !"]);
         } else {
             $this->addFlashMessage(["danger" => "Une erreur s'est produite lors de la suppression du commentaire !"]);
         }
+
         $this->redirect('/dashboard/moderation');
     }
 
@@ -136,30 +141,35 @@ class BackOfficeController extends Controller
         $userRepository = new UserRepository($this->getDatabase());
         $adminConnected = $this->session->get('user');
         $users = $userRepository->getAllUser($adminConnected->id);
+
         $this->view('back_office/users.html.twig', ['route' => '/dashboard/users', 'users' => $users]);
     }
 
-    public function allowPermissionAdmin(int $id)
+    public function allowPermissionAdmin(int $id): void
     {
         $userRepository = new UserRepository($this->getDatabase());
         $user = $userRepository->getUserById($id);
-        if ($userRepository->setPermissionUser($id, TRUE)) {
+
+        if ($userRepository->setPermissionUser($id, true)) {
             $this->addFlashMessage(["success" => "Le droit administrateur a bien été donné à $user->firstname $user->lastname"]);
         } else {
             $this->addFlashMessage(["error" => "Une erreur s'est produite. Le droit administrateur n'a pu être donné à $user->firstname $user->lastname"]);
         }
+
         $this->redirect('/dashboard/users');
     }
 
-    public function denyPermissionAdmin(int $id)
+    public function denyPermissionAdmin(int $id): void
     {
         $userRepository = new UserRepository($this->getDatabase());
         $user = $userRepository->getUserById($id);
-        if ($userRepository->setPermissionUser($id, FALSE)) {
+
+        if ($userRepository->setPermissionUser($id, false)) {
             $this->addFlashMessage(["success" => "Le droit administrateur a bien été retiré à $user->firstname $user->lastname"]);
         } else {
             $this->addFlashMessage(["error" => "Une erreur s'est produite. Le droit administrateur n'a pu être retiré à $user->firstname $user->lastname"]);
         }
+
         $this->redirect('/dashboard/users');
     }
 }
