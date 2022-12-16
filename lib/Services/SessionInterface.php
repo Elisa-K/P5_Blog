@@ -6,6 +6,7 @@ namespace Lib\Services;
 
 interface SessionInterface
 {
+    public function regenerateId(): void;
     public function get(string $key): mixed;
     public function set(string $key, $value): self;
     public function remove(string $key): void;

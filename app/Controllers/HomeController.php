@@ -12,13 +12,15 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        $this->view('front_office/homepage.html.twig', ['route' => '/']);
+
+        $this->view('front_office/homepage.html.twig', ['route' => '/', 'token' => $this->createToken()]);
     }
     public function sendMail(): void
     {
         $mailForm = new EditMailForm();
 
-        if ($this->isSubmit() && $mailForm->isValid()) {
+        if ($this->isSubmit() && $this->isValidToken() && $mailForm->isValid()) {
+
             $mail = new Mail();
 
             if ($mail->sendMail($mailForm->data['email'], $mailForm->data['firstname'], $mailForm->data['lastname'], $mailForm->data['message'])) {
@@ -30,6 +32,6 @@ class HomeController extends Controller
             $this->redirect('/#contact');
         }
 
-        $this->view('front_office/homepage.html.twig', ['route' => '/#contact', 'errors' => $mailForm->getError(), 'contact' => $mailForm->data]);
+        $this->view('front_office/homepage.html.twig', ['route' => '/#contact', 'errors' => $mailForm->getError(), 'contact' => $mailForm->data, 'token' => $this->createToken()]);
     }
 }

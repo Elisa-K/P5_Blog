@@ -6,15 +6,17 @@ namespace Lib;
 
 use PDO;
 use Twig\Environment;
-use Lib\Services\{FlashMessage, SessionManager};
 use Twig\Loader\FilesystemLoader;
+use Lib\Services\{FlashMessage, SessionManager, TokenManager};
 use Lib\Exceptions\{AccessDeniedException, UnauthorizedException};
 
 class Controller
 {
-    private ?PDO $dbConnect;
-    public ?SessionManager $session;
-    public FlashMessage $flashMessage;
+    private ? PDO $dbConnect;
+    protected SessionManager $session;
+    private FlashMessage $flashMessage;
+    private TokenManager $tokenManager;
+
 
     public function __construct()
     {
@@ -25,9 +27,10 @@ class Controller
             $this->session->set('messages', array());
         }
         $this->flashMessage = new FlashMessage($_SESSION['messages']);
+        $this->tokenManager = new TokenManager();
     }
 
-    public function getDatabase(): ?PDO
+    public function getDatabase(): ? PDO
     {
         return $this->dbConnect;
     }
@@ -46,6 +49,7 @@ class Controller
         $twig->addGlobal('flashMessage', $this->flashMessage);
         $twig->addGlobal('sessionUser', $this->session->get('user'));
         $twig->addExtension(new \Twig\Extension\DebugExtension());
+        $this->session->regenerateId();
         print_r($twig->render($path, $datas));
     }
 
@@ -77,5 +81,16 @@ class Controller
     public function addFlashMessage(array $message): void
     {
         $this->flashMessage->add($message);
+    }
+
+    public function createToken(): string
+    {
+        return $this->tokenManager->generate();
+    }
+
+    public function isValidToken(): bool
+    {
+        $tokenForm = filter_input(INPUT_POST, 'token');
+        return $this->tokenManager->checkToken($tokenForm);
     }
 }

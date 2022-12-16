@@ -9,7 +9,7 @@ use App\Models\Entities\Post;
 
 class PostRepository
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
 
     public function __construct($dbConnect)
     {
@@ -72,8 +72,11 @@ class PostRepository
 
     public function getFeaturedImg(int $id): string
     {
-        $stmt = $this->dbConnect->query("SELECT featuredImage FROM post WHERE id = $id");
+        $stmt = $this->dbConnect->prepare("SELECT featuredImage FROM post WHERE id = :id");
 
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
         $row = $stmt->fetch();
 
         $featuredImg = $row['featuredImage'];

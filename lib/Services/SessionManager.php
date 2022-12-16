@@ -11,8 +11,14 @@ class SessionManager implements SessionInterface
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
+            session_set_cookie_params(['secure' => false, 'httponly' => true, 'samesite' => 'lax']);
             session_start();
         }
+    }
+
+    public function regenerateId(): void
+    {
+        session_regenerate_id();
     }
 
     public function get(string $key): mixed

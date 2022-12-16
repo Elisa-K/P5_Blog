@@ -47,7 +47,7 @@ class BackOfficeController extends Controller
     {
         $postForm = new EditPostForm("add");
 
-        if ($this->isSubmit() && $postForm->isValid()) {
+        if ($this->isSubmit() && $this->isValidToken() && $postForm->isValid()) {
             $postRepository = new PostRepository($this->getDatabase());
             $fileManager = new FileManager();
 
@@ -58,7 +58,7 @@ class BackOfficeController extends Controller
             $this->redirect('/dashboard/posts');
         }
 
-        $this->view('back_office/new_post.html.twig', ["errors" => $postForm->getError(), 'post' => $postForm->data]);
+        $this->view('back_office/new_post.html.twig', ["errors" => $postForm->getError(), 'post' => $postForm->data, 'token' => $this->createToken()]);
     }
 
     public function updatePost(int $id): void
@@ -67,7 +67,7 @@ class BackOfficeController extends Controller
         $post = $postRepository->getPostById($id);
         $postForm = new EditPostForm("update");
 
-        if ($this->isSubmit()) {
+        if ($this->isSubmit() && $this->isValidToken()) {
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
                 if ($postForm->data['featuredImg']) {
@@ -83,7 +83,7 @@ class BackOfficeController extends Controller
             }
         }
 
-        $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError()]);
+        $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError(), 'token' => $this->createToken()]);
     }
 
     public function deletePost(int $id): void

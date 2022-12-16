@@ -29,8 +29,7 @@ class BlogController extends Controller
         $post = $postRepository->getPostById($id);
         $commentRepository = new CommentRepository($this->getDatabase());
         $comments = $commentRepository->getCommentsByPostId($id);
-
-        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments]);
+        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'token' => $this->createToken()]);
     }
 
     public function addComment(int $postId): void
@@ -38,7 +37,7 @@ class BlogController extends Controller
         $this->checkUserConnect();
         $commentForm = new EditCommentForm();
 
-        if ($commentForm->isValid()) {
+        if ($this->isSubmit() && $this->isValidToken() && $commentForm->isValid()) {
             $commentRepository = new CommentRepository($this->getDatabase());
             $commentRepository->addComment($postId, $commentForm->data['comment'], $this->session->get('user')->id);
             $this->addFlashMessage(["success" => "Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié."]);
@@ -50,21 +49,21 @@ class BlogController extends Controller
         $commentRepository = new CommentRepository($this->getDatabase());
         $comments = $commentRepository->getCommentsByPostId($postId);
 
-        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $commentForm->getError()]);
+        $this->view('front_office/single_post.html.twig', ['route' => '/blog', 'post' => $post, 'comments' => $comments, 'error' => $commentForm->getError(), 'token' => $this->createToken()]);
     }
 
     public function signUp(): void
     {
         $userForm = new EditUserForm("register");
 
-        if ($this->isSubmit() && $userForm->isValid()) {
+        if ($this->isSubmit() && $this->isValidToken() && $userForm->isValid()) {
             $userRepository = new UserRepository($this->getDatabase());
             $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
             $this->addFlashMessage(["success" => "Votre compte a bien été créé. Vous pouvez maintenant vous connecter."]);
             $this->redirect('/signin');
         }
 
-        $this->view('front_office/sign_up.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $userForm->getError()]);
+        $this->view('front_office/sign_up.html.twig', ['route' => '/signup', 'user' => $userForm->data, 'errors' => $userForm->getError(), 'token' => $this->createToken()]);
     }
 
     public function signIn(): void
@@ -72,7 +71,7 @@ class BlogController extends Controller
         $userForm = new EditUserForm("login");
         $errors = [];
 
-        if ($this->isSubmit() && $userForm->isValid()) {
+        if ($this->isSubmit() && $this->isValidToken() && $userForm->isValid()) {
             $userRepository = new UserRepository($this->getDatabase());
             $user = $userRepository->getUserByEmail($userForm->data['email']);
             if ($user && password_verify($userForm->data['password'], $user->password)) {
@@ -84,7 +83,7 @@ class BlogController extends Controller
             $errors = $userForm->getError();
         }
 
-        $this->view('front_office/sign_in.html.twig', ['route' => '/signin', 'user' => $userForm->data, 'errors' => $errors]);
+        $this->view('front_office/sign_in.html.twig', ['route' => '/signin', 'user' => $userForm->data, 'errors' => $errors, 'token' => $this->createToken()]);
     }
 
     public function logOut(): void
