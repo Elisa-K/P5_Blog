@@ -47,7 +47,10 @@ class BackOfficeController extends Controller
     {
         $postForm = new EditPostForm("add");
 
-        if ($this->isSubmit() && $this->isValidToken() && $postForm->isValid()) {
+        if ($this->isSubmit() && $postForm->isValid()) {
+            if (!$this->isValidToken())
+                $this->redirect('/dashboard/newpost');
+
             $postRepository = new PostRepository($this->getDatabase());
             $fileManager = new FileManager();
 
@@ -67,7 +70,10 @@ class BackOfficeController extends Controller
         $post = $postRepository->getPostById($id);
         $postForm = new EditPostForm("update");
 
-        if ($this->isSubmit() && $this->isValidToken()) {
+        if ($this->isSubmit()) {
+            if (!$this->isValidToken())
+                $this->redirect('/dashboard/updatepost/' . $id);
+
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
                 if ($postForm->data['featuredImg']) {

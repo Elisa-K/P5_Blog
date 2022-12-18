@@ -19,7 +19,9 @@ class HomeController extends Controller
     {
         $mailForm = new EditMailForm();
 
-        if ($this->isSubmit() && $this->isValidToken() && $mailForm->isValid()) {
+        if ($this->isSubmit() && $mailForm->isValid()) {
+            if (!$this->isValidToken())
+                $this->redirect('/');
 
             $mail = new Mail();
 

@@ -37,7 +37,10 @@ class BlogController extends Controller
         $this->checkUserConnect();
         $commentForm = new EditCommentForm();
 
-        if ($this->isSubmit() && $this->isValidToken() && $commentForm->isValid()) {
+        if ($this->isSubmit() && $commentForm->isValid()) {
+            if (!$this->isValidToken())
+                $this->redirect('/blog/post/' . $postId);
+
             $commentRepository = new CommentRepository($this->getDatabase());
             $commentRepository->addComment($postId, $commentForm->data['comment'], $this->session->get('user')->id);
             $this->addFlashMessage(["success" => "Votre commentaire a bien été transmis ! Il est actuellement soumis à validation avant d'être publié."]);
@@ -56,7 +59,10 @@ class BlogController extends Controller
     {
         $userForm = new EditUserForm("register");
 
-        if ($this->isSubmit() && $this->isValidToken() && $userForm->isValid()) {
+        if ($this->isSubmit() && $userForm->isValid()) {
+            if (!$this->isValidToken())
+                $this->redirect('/signup');
+
             $userRepository = new UserRepository($this->getDatabase());
             $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
             $this->addFlashMessage(["success" => "Votre compte a bien été créé. Vous pouvez maintenant vous connecter."]);
@@ -71,7 +77,10 @@ class BlogController extends Controller
         $userForm = new EditUserForm("login");
         $errors = [];
 
-        if ($this->isSubmit() && $this->isValidToken() && $userForm->isValid()) {
+        if ($this->isSubmit() && $userForm->isValid()) {
+            if (!$this->isValidToken())
+                $this->redirect('/signin');
+
             $userRepository = new UserRepository($this->getDatabase());
             $user = $userRepository->getUserByEmail($userForm->data['email']);
             if ($user && password_verify($userForm->data['password'], $user->password)) {

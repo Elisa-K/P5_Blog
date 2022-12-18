@@ -91,6 +91,10 @@ class Controller
     public function isValidToken(): bool
     {
         $tokenForm = filter_input(INPUT_POST, 'token');
-        return $this->tokenManager->checkToken($tokenForm);
+        if (!$this->tokenManager->checkToken($tokenForm)) {
+            $this->addFlashMessage(["danger" => "Une erreur est survenue lors du traitement du formulaire"]);
+            return false;
+        }
+        return true;
     }
 }
