@@ -12,7 +12,6 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-
         $this->view('front_office/homepage.html.twig', ['route' => '/', 'token' => $this->createToken()]);
     }
     public function sendMail(): void
@@ -20,8 +19,9 @@ class HomeController extends Controller
         $mailForm = new EditMailForm();
 
         if ($this->isSubmit() && $mailForm->isValid()) {
-            if (!$this->isValidToken())
+            if (!$this->isValidToken()) {
                 $this->redirect('/');
+            }
 
             $mail = new Mail();
 

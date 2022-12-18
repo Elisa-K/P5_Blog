@@ -48,8 +48,9 @@ class BackOfficeController extends Controller
         $postForm = new EditPostForm("add");
 
         if ($this->isSubmit() && $postForm->isValid()) {
-            if (!$this->isValidToken())
+            if (!$this->isValidToken()) {
                 $this->redirect('/dashboard/newpost');
+            }
 
             $postRepository = new PostRepository($this->getDatabase());
             $fileManager = new FileManager();
@@ -71,8 +72,9 @@ class BackOfficeController extends Controller
         $postForm = new EditPostForm("update");
 
         if ($this->isSubmit()) {
-            if (!$this->isValidToken())
+            if (!$this->isValidToken()) {
                 $this->redirect('/dashboard/updatepost/' . $id);
+            }
 
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
@@ -84,10 +86,11 @@ class BackOfficeController extends Controller
                 $postRepository->updatePost($id, $postForm->data['title'], $postForm->data['excerpt'], $featuredImg, $postForm->data['content'], $this->session->get('user')->id);
                 $this->addFlashMessage(["success" => "Votre article a bien été mise à jour !"]);
                 $this->redirect('/dashboard/posts');
-            } else {
-                $post = array_merge((array) $post, $postForm->data);
             }
         }
+
+        $dataUpdate = array_filter($postForm->data);
+        $post = array_merge((array) $post, $dataUpdate);
 
         $this->view('back_office/update_post.html.twig', ['post' => $post, "errors" => $postForm->getError(), 'token' => $this->createToken()]);
     }

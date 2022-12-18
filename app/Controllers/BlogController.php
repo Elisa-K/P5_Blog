@@ -38,8 +38,9 @@ class BlogController extends Controller
         $commentForm = new EditCommentForm();
 
         if ($this->isSubmit() && $commentForm->isValid()) {
-            if (!$this->isValidToken())
+            if (!$this->isValidToken()) {
                 $this->redirect('/blog/post/' . $postId);
+            }
 
             $commentRepository = new CommentRepository($this->getDatabase());
             $commentRepository->addComment($postId, $commentForm->data['comment'], $this->session->get('user')->id);
@@ -60,8 +61,9 @@ class BlogController extends Controller
         $userForm = new EditUserForm("register");
 
         if ($this->isSubmit() && $userForm->isValid()) {
-            if (!$this->isValidToken())
+            if (!$this->isValidToken()) {
                 $this->redirect('/signup');
+            }
 
             $userRepository = new UserRepository($this->getDatabase());
             $userRepository->registerUser($userForm->data['username'], $userForm->data['firstname'], $userForm->data['lastname'], $userForm->data['email'], $userForm->data['password']);
@@ -78,8 +80,9 @@ class BlogController extends Controller
         $errors = [];
 
         if ($this->isSubmit() && $userForm->isValid()) {
-            if (!$this->isValidToken())
+            if (!$this->isValidToken()) {
                 $this->redirect('/signin');
+            }
 
             $userRepository = new UserRepository($this->getDatabase());
             $user = $userRepository->getUserByEmail($userForm->data['email']);

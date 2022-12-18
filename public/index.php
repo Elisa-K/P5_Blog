@@ -44,6 +44,7 @@ $router->get('/dashboard/denypermissionadmin/:id', 'BackOfficeController#denyPer
 //Erreurs
 $router->get('/error/:code', "ErrorController#error");
 
+// $router->run();
 try {
     $router->run();
 } catch (RouteNotFoundException) {

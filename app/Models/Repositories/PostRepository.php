@@ -9,7 +9,7 @@ use App\Models\Entities\Post;
 
 class PostRepository
 {
-    private ? PDO $dbConnect;
+    private ?PDO $dbConnect;
 
     public function __construct($dbConnect)
     {
