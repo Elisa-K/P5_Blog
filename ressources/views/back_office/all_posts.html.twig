@@ -7,7 +7,7 @@
 {% block content %}
 	<div class="row page-titles">
         <div class="col-md-12 align-self-center">
-            <h3 class="text-themecolor">Tous les articles</h3>			
+            <h3 class="text-themecolor">Tous les articles</h3>
         </div>
         <div class="col-md-12 align-self-center mt-4">
              <a href="/dashboard/newpost" class="btn waves-effect waves-light btn-themecolor text-white">Publier un article</a>
@@ -39,8 +39,8 @@
 										<td>{{post.updatedAt}}</td>
 										<td>
 											<a href="/dashboard/updatepost/{{post.id}}" class="btn waves-effect waves-light btn-primary text-white">Modifier</a>
-											<a class="btn waves-effect waves-light btn-danger text-white" data-bs-toggle="modal" data-bs-target="#deletePostConfirm">Supprimer</a>
-											<div class="modal fade" id="deletePostConfirm" tabindex="-1" aria-labelledby="deletePostConfirmQuestion" aria-hidden="true">
+											<a class="btn waves-effect waves-light btn-danger text-white" data-bs-toggle="modal" data-bs-target="#deletePostConfirm{{post.id}}">Supprimer</a>
+											<div class="modal fade" id="deletePostConfirm{{post.id}}" tabindex="-1" aria-labelledby="deletePostConfirmQuestion" aria-hidden="true">
 												<div class="modal-dialog modal-dialog-centered">
 													<div class="modal-content">
 														<div class="modal-header">
@@ -51,8 +51,8 @@
 																Attention cette action est irréversible !
 														</div>
 														<div class="modal-footer">
-															<a href="/dashboard/deletepost/{{post.id}}" class="btn btn-danger text-white">Supprimer</a>	
-															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>																													
+															<a href="/dashboard/deletepost/{{post.id}}" class="btn btn-danger text-white">Supprimer</a>
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 														</div>
 													</div>
 												</div>

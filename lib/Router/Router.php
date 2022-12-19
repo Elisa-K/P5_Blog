@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lib\Router;
 
-use TypeError;
 use Lib\Router\Route;
 use Lib\Exceptions\RouteNotFoundException;
 
@@ -44,7 +43,6 @@ class Router
                 }
             }
         }
-
-        // throw new RouteNotFoundException('No matching routes');
+        throw new RouteNotFoundException();
     }
 }

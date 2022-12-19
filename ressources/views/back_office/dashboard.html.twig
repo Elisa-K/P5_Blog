@@ -5,7 +5,91 @@
 {% endblock %}
 
 {% block content %}
-  <h1>
-    Accueil Dashboard
-  </h1>
+  <div class="row page-titles">
+		<div class="col-md-12 align-self-center">
+				<h3 class="text-themecolor">Dashboard</h3>
+		</div>
+	</div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex no-block flex-column">
+              <h5 class="card-title mb-0 text-start">Nombre d'article publié</h5>
+              <div class="d-flex no-block flex-column justify-content-center align-items-center" style="height:200px;">
+                <span class="display-1 fw-bold">{{ nbPost }}</span>
+                <span>article{% if nbPost > 1 %}s{% endif %}</span>
+              </div>
+            <a href="/dashboard/newpost" class="btn waves-effect waves-light btn-themecolor text-white"><i class="fa-solid fa-pen-to-square"></i> Publier un article</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex no-block flex-column">
+              <h5 class="card-title mb-0 text-start">Nombre de commentaire à modérer</h5>
+              <div class="d-flex no-block flex-column justify-content-center align-items-center" style="height:200px;">
+                <span class="display-1 fw-bold">{{ nbComment }}</span>
+                <span>commentaire{% if nbComment > 1 %}s{% endif %}</span>
+              </div>
+              <a class="btn waves-effect waves-light btn-themecolor text-white" href="/dashboard/moderation" aria-expanded="false"><i class="fa-solid fa-comments"></i> Modérer les commentaires</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex no-block flex-column">
+              <h5 class="card-title mb-0 text-start">Nombre d'inscrit</h5>
+              <div class="d-flex no-block flex-column justify-content-center align-items-center" style="height:200px;">
+                <span class="display-1 fw-bold">{{ nbUser }}</span>
+                <span>utilisateur{% if nbUser > 1 %}s{% endif %}</span>
+                <div>
+                  <span>dont <span class="fw-bold">{{ nbAdmin }}</span>  administrateur{% if nbAdmin > 1 %}s{% endif %}</span>
+                </div>
+              </div>
+              <a class="btn waves-effect waves-light btn-themecolor text-white" href="/dashboard/users" aria-expanded="false"><i class="fa-solid fa-users"></i></i> Gestion des utilisateurs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card w-100">
+        <div class="card-body">
+          <div class="d-flex">
+              <h5 class="card-title">Les derniers articles publiés</h5>
+          </div>
+          <div class="table-responsive mt-3 no-wrap">
+            <table class="table table-hover vm no-th-brd">
+              <thead>
+                  <tr>
+                    <th>Auteur</th>
+                    <th>Titre</th>
+                    <th>Créé le</th>
+                    <th>Dernière modification le</th>
+                    <th>Nb commentaire</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for post in lastPosts %}
+                <tr>
+                  <td>{{ post.author }}</td>
+                  <td class="fw-bold">{{ post.title }}</td>
+                  <td>{{ post.createdAt }}</td>
+                  <td>{{ post.updatedAt }}</td>
+                  <td>{{ post.nbComment }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

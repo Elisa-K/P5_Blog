@@ -11,7 +11,7 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"/>
 		<link href="../assets/node_modules/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet"/>
 		<link href="/public/assets/back-office/css/style.css" rel="stylesheet"/>
-		<link href="/public/assets/back-office/css/colors/default.css" id="theme" rel="stylesheet"/> 
+		<link href="/public/assets/back-office/css/colors/default.css" id="theme" rel="stylesheet"/>
 		{% block stylesheets %}{% endblock %}
 	</head>
 
@@ -41,14 +41,14 @@
 									<i class="fa fa-bars"></i>
 								</a>
 							</li>
-						</ul>						
-						<!-- User profile -->						
+						</ul>
+						<!-- User profile -->
 						<ul class="navbar-nav my-lg-0">
-							<!-- Profile -->							
+							<!-- Profile -->
 							<li class="nav-item dropdown u-pro">
 								<a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<img src="/public/assets/back-office/img/user.png" alt="" class=""/>
-									<span class="hidden-md-down">Elisa KLEIN &nbsp;</span>
+									<span class="hidden-md-down">{{ sessionUser.firstname|capitalize }} {{sessionUser.lastname|capitalize }}</span>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="navbarDropdown"></ul>
 							</li>
@@ -87,9 +87,15 @@
 								</a>
 							</li>
 							<li>
-								<a class="waves-effect waves-dark" href="/dashboard/profil" aria-expanded="false">
-									<i class="fa-solid fa-address-card"></i>
-									<span class="hide-menu">Mon profil</span>
+								<a class="waves-effect waves-dark" href="/" aria-expanded="false">
+									<i class="fa-solid fa-compass"></i>
+									<span class="hide-menu">Blog</span>
+								</a>
+							</li>
+							<li>
+								<a class="waves-effect waves-dark" href="/logout" aria-expanded="false">
+									<i class="fa-solid fa-power-off"></i>
+									<span class="hide-menu text-danger fw-bold">Déconnexion</span>
 								</a>
 							</li>
 						</ul>
@@ -101,26 +107,25 @@
 
 		{# Content #}
 			<main class="page-wrapper">
-				<div class="container-fluid"> 
+				<div class="container-fluid">
 					{% block content %}{% endblock %}
 				</div>
-				{% if flashMessage is not empty %}
-				<div class="toast-container fixed-bottom w-100" style="z-index:100">
-					<div class="toast w-100 bg-success text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-						<div class="d-flex">
-							<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">							
-								{% for message in flashMessage %}
-									{{ message }}
-								{% endfor %}
+				{% for messages in flashMessage %}
+					{% for type, message in messages %}
+						<div class="toast-container fixed-bottom w-100" style="z-index:100">
+							<div class="toast w-100 bg-{{type}} text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+								<div class="d-flex">
+									<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">
+											{{ message }}
+									</div>
+									<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+								</div>
 							</div>
-							<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 						</div>
-					</div>
-				</div>
-				{% endif %}
+					{% endfor %}
+				{% endfor %}
 				<footer class="footer">
-					© 2022 OC-P5 Elisa Klein by
-					<a href="https://www.wrappixel.com/">wrappixel.com</a>
+					© 2022 OC-P5 Elisa Klein
 				</footer>
 			</main>
 		</div>

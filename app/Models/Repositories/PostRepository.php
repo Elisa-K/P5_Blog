@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models\Repositories;
 
 use PDO;
-use PDOException;
 use App\Models\Entities\Post;
 
 class PostRepository
@@ -34,6 +33,7 @@ class PostRepository
             $post->nbComment = $row['nbComment'];
             $posts[] = $post;
         }
+
         return $posts;
     }
 
@@ -55,55 +55,71 @@ class PostRepository
         $post->createdAt = $row['french_createdAt'];
         $post->updatedAt = $row['french_updatedAt'];
         $post->nbComment = $row['nbComment'];
+
         return $post;
     }
 
     public function getNbPosts(): int
     {
         $stmt = $this->dbConnect->query("SELECT count(id) as nb_post FROM post");
+
         $row = $stmt->fetch();
+
         $nbPost = $row['nb_post'];
+
         return $nbPost;
     }
 
     public function getFeaturedImg(int $id): string
     {
-        $stmt = $this->dbConnect->query("SELECT featuredImage FROM post WHERE id = $id");
+        $stmt = $this->dbConnect->prepare("SELECT featuredImage FROM post WHERE id = :id");
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
         $row = $stmt->fetch();
+
         $featuredImg = $row['featuredImage'];
+
         return $featuredImg;
     }
 
     public function addPost(string $title, string $excerpt, string $featuredImg, string $content, int $userId): bool
     {
         $stmt = $this->dbConnect->prepare("INSERT INTO post (title, excerpt, featuredImage, content, user_id, createdAt) VALUES(:title, :excerpt, :featuredImage, :content, :userId, NOW())");
+
         $stmt->bindParam(':title', $title, PDO::PARAM_STR);
         $stmt->bindParam(':excerpt', $excerpt, PDO::PARAM_STR);
         $stmt->bindParam(':featuredImage', $featuredImg, PDO::PARAM_STR);
         $stmt->bindParam(':content', $content, PDO::PARAM_STR);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
         $affectedLines = $stmt->execute();
 
         return ($affectedLines > 0);
     }
 
-    public function updatePost(int $id, string $title, string $excerpt, string $featuredImg, string $content): bool
+    public function updatePost(int $id, string $title, string $excerpt, string $featuredImg, string $content, int $author): bool
     {
-        $stmt = $this->dbConnect->prepare("UPDATE post SET title=:title, excerpt=:excerpt, featuredImage=:featuredImage, content=:content, updateAt=NOW() WHERE id=:id");
+        $stmt = $this->dbConnect->prepare("UPDATE post SET title=:title, excerpt=:excerpt, featuredImage=:featuredImage, content=:content, user_id=:author, updateAt=NOW() WHERE id=:id");
+
         $stmt->bindParam(':title', $title, PDO::PARAM_STR);
         $stmt->bindParam(':excerpt', $excerpt, PDO::PARAM_STR);
         $stmt->bindParam(':featuredImage', $featuredImg, PDO::PARAM_STR);
         $stmt->bindParam(':content', $content, PDO::PARAM_STR);
+        $stmt->bindParam(':author', $author, PDO::PARAM_INT);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
         $affectedLines = $stmt->execute();
 
         return ($affectedLines > 0);
-
     }
     public function deletePost(int $id): bool
     {
         $stmt = $this->dbConnect->prepare("DELETE FROM post WHERE id = :id");
+
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
         $affectedLines = $stmt->execute();
 
         return ($affectedLines > 0);

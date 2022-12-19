@@ -1,0 +1,85 @@
+{% extends 'back_office/layout.html.twig' %}
+
+{% block title %}
+  EK - Listes des utilisateurs
+{% endblock %}
+
+{% block content %}
+	<div class="row page-titles">
+		<div class="col-md-12 align-self-center">
+				<h3 class="text-themecolor text-center">Liste des utilisateurs</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Pseudo</th>
+									<th>Prénom</th>
+									<th>Nom</th>
+									<th>Email</th>
+									<th>Inscrit le</th>
+									<th>Rôle</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for user in users %}
+								<tr class="{% if user.isAdmin %}table-primary {% endif %} align-middle">
+									<td>{{ user.username }}</td>
+									<td>{{ user.firstname }}</td>
+									<td>{{ user.lastname }}</td>
+									<td>{{ user.email }}</td>
+									<td>{{ user.createdAt }}</td>
+									<td>{% if user.isAdmin %} Administrateur {% else %} Utilisateur {% endif %}</td>
+									<td>
+										{% if user.isAdmin %}
+											<a class="btn waves-effect waves-light btn-primary text-white" data-bs-toggle="modal" data-bs-target="#denyPermissionConfirm{{user.id}}">Retirer droit admin</a>
+											<div class="modal fade" id="denyPermissionConfirm{{user.id}}" tabindex="-1" aria-labelledby="denyPermissionConfirmQuestion{{user.id}}" aria-hidden="true">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h1 class="modal-title fs-5" id="denyPermissionConfirmQuestion">Êtes-vous sûr de vouloir retirer le droit administrateur à {{user.firstname}} {{user.lastname}} ?</h1>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<div class="modal-footer">
+															<a href="/dashboard/denypermissionadmin/{{user.id}}" class="btn btn-primary text-white">Retirer droit</a>
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% else %}
+											<a class="btn waves-effect waves-light btn-info text-white" data-bs-toggle="modal" data-bs-target="#allowPermissionConfirm{{user.id}}">Donner droit admin</a>
+											<div class="modal fade" id="allowPermissionConfirm{{user.id}}" tabindex="-1" aria-labelledby="allowPermissionConfirmQuestion{{user.id}}" aria-hidden="true">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h1 class="modal-title fs-5" id="allowPermissionConfirmQuestion">Êtes-vous sûr de vouloir donner le droit administrateur à {{user.firstname }} {{ user.lastname }} ?</h1>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<div class="modal-footer">
+															<a href="/dashboard/allowpermissionadmin/{{user.id}}" class="btn btn-info text-white">Donner droit</a>
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+

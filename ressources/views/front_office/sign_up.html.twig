@@ -1,0 +1,54 @@
+{% extends 'front_office/layout.html.twig' %}
+
+{% block title %}
+	EK - S'inscrire
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="main col-lg-12 col-xl-6 col-md-12 mx-auto">
+			<div class="form-bloc shadow">
+					<img src="/public/assets/front-office/img/logo.png" alt="EK" class="mx-auto d-block" />
+					<h3 class="mb-4 text-center">Inscription</h3>
+					<form action="/signup" method="POST">
+						{% if errors is not empty %}
+							<div class="alert alert-danger" role="alert">
+								<ul>
+									{% for message in errors %}
+											<li>{{message}}</li>
+									{% endfor %}
+								</ul>
+							</div>
+						{% endif %}
+						<div class="form-floating mb-3">
+							<input class="form-control" name="username" type="text" placeholder="pseudo" {% if user.username is defined %} value="{{ user.username }}" {% endif %}/>
+							<label for="username">Pseudo *</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input class="form-control" name="firstname" type="text" placeholder="Prénom *" {% if user.firstname is defined %} value="{{ user.firstname }}" {% endif %}/>
+							<label for="firstname">Prénom *</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input class="form-control" name="lastname" type="text" placeholder="Nom *" {% if user.lastname is defined %} value="{{ user.lastname }}" {% endif %}/>
+							<label for="lastname">Nom *</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input class="form-control" name="email" type="email" placeholder="Email *" {% if user.email is defined %} value="{{ user.email }}" {% endif %}/>
+							<label for="email">Email *</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input class="form-control" name="password" type="password" placeholder="Mot de passe *" aria-describedby="passwordHelpBlock"/>
+							<label for="password">Mot de passe *</label>
+							<div id="passwordHelpBlock" class="form-text">
+								Votre mot de passe doit contenir minimum 8 caractères.
+							</div>
+						</div>
+						<div class="d-grid">
+							<input type="hidden" name="token" value="{{token}}" />
+							<button class="btn-fill mt-0" id="submitButton" type="submit">S'inscrire</button>
+						</div>
+					</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

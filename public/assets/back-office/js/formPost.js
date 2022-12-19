@@ -14,7 +14,7 @@ tinymce.init({
 		/{#(.*)#}/g, // Allow TWIG comment codes
 	],
 	automatic_uploads: true,
-	file_picker_types: 'image',  
+	file_picker_types: 'image',
 	file_picker_callback: (cb, value, meta) => {
 		const input = document.createElement('input');
 		input.setAttribute('type', 'file');
@@ -22,12 +22,12 @@ tinymce.init({
 		input.addEventListener('change', (e) => {
 			const file = e.target.files[0];
 			const reader = new FileReader();
-			reader.addEventListener('load', () => {					
+			reader.addEventListener('load', () => {
 				const id = 'blobid' + (new Date()).getTime();
 				const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
 				const base64 = reader.result.split(',')[1];
 				const blobInfo = blobCache.create(id, file, base64);
-				blobCache.add(blobInfo);					
+				blobCache.add(blobInfo);
 				cb(blobInfo.blobUri(), { title: file.name });
 			});
 			reader.readAsDataURL(file);
@@ -45,17 +45,15 @@ tinymce.init({
 $(document).on('click', '#submit', chkSubmit);
 
 function chkSubmit() {
-
 	var msg = tinymce.get("content-tiny").getContent();
-	
 	var textmsg = $.trim($(msg).text());
-	
+
 		if (textmsg == '') {
 			$('.error').show();
 			$('.error').html('Veuillez écrire le contenu de votre article avant de le publier.');
 			return false;
 		}else{
 			$('.error').hide();
-			$('.error').html('');					
-		}	
+			$('.error').html('');
+		}
 }

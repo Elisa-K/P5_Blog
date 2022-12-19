@@ -6,10 +6,7 @@ namespace Lib;
 
 use PDO;
 use PDOException;
-use Symfony\Component\Dotenv\Dotenv;
 
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__ . '/../.env');
 class Database
 {
     public ?PDO $database = null;

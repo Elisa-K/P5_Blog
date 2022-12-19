@@ -11,8 +11,8 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 		<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"/>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">		
-		<link rel="stylesheet" href="/public/assets/front-office/styles.css"/> 
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+		<link rel="stylesheet" href="/public/assets/front-office/styles.css"/>
 		{% block stylesheets %}{% endblock %}
 	</head>
 
@@ -30,9 +30,6 @@
 							<a class="nav-link {% if route == '/' %} active {% endif %}" href="/">Accueil</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/#cv">Mon CV</a>
-						</li>
-						<li class="nav-item">
 							<a class="nav-link {% if route == '/blog' %} active {% endif %}" href="/blog">Blog</a>
 						</li>
 						<li class="nav-item">
@@ -40,12 +37,27 @@
 						</li>
 					</ul>
 					<ul class="right navbar-nav ms-auto">
+					{% if sessionUser is not null %}
+						<li class="nav-item-right d-flex align-items-center user-menu mb-xl-0 mb-3">
+							<img src="/public/assets/back-office/img/user.png" alt="avatar" class=""/>
+							<span class="fw-bold fs-6 ms-2 me-4 ">{{ sessionUser.firstname|capitalize }} {{sessionUser.lastname|capitalize }}</span>
+						</li>
+						{% if sessionUser.isAdmin == TRUE %}
+							<li class="nav-item-right">
+								<a class="nav-link-right" href="/dashboard">Tableau de bord</a>
+							</li>
+						{% endif %}
+						<li class="nav-item-right">
+							<a class="nav-link-right btn-fill" href="/logout">Déconnexion</a>
+						</li>
+					{% else %}
 						<li class="nav-item-right">
 							<a class="nav-link-right" href="/signup">S'inscrire</a>
 						</li>
 						<li class="nav-item-right">
 							<a class="nav-link-right btn-fill" href="/signin">Connexion</a>
-						</li>						
+						</li>
+					{% endif %}
 					</ul>
 				</div>
 			</div>
@@ -55,20 +67,20 @@
 			<div class="container">
 			{% block content %}{% endblock %}
 			</div>
-			{% if flashMessage is not empty %}
-				<div class="toast-container fixed-bottom w-100" style="z-index:100">
-					<div class="toast w-100 bg-success text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-						<div class="d-flex">
-							<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">							
-								{% for message in flashMessage %}
-									{{ message }}
-								{% endfor %}
+			{% for messages in flashMessage %}
+				{% for type, message in messages %}
+					<div class="toast-container fixed-bottom w-100" style="z-index:100">
+						<div class="toast w-100 bg-{{type}} text-white border-0 rounded-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+							<div class="d-flex">
+								<div class="toast-body w-100 fs-5 p-3 text-center fw-bold">
+										{{ message }}
+								</div>
+								<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 							</div>
-							<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 						</div>
 					</div>
-				</div>
-			{% endif %}
+				{% endfor %}
+			{% endfor %}
 		</main>
 		{# Footer #}
 		<footer>
@@ -77,11 +89,11 @@
 					<div class="about">
 						<img src="/public/assets/front-office/img/logo.png" alt="EK">
 						<p class="text-muted py-4">
-							Lorem ipsum dolor sit amet, consectetur adip
+							Développeuse web passionnée par l'innovation
 						</p>
 						<div class="social-media">
-							<a href="" class="me-2 text-reset"><img src="/public/assets/front-office/img/github.svg" alt=""></a>
-							<a href="" class="me-2 text-reset"><img src="/public/assets/front-office/img/social-media-linkedin.svg" alt=""></a>
+							<a href="https://github.com/Elisa-K" class="me-2 text-reset"><img src="/public/assets/front-office/img/github.svg" alt=""></a>
+							<a href="https://www.linkedin.com/in/elisa-klein/" class="me-2 text-reset"><img src="/public/assets/front-office/img/social-media-linkedin.svg" alt=""></a>
 						</div>
 					</div>
 					<div class="nav-footer">
@@ -90,7 +102,14 @@
 						<p><a href="/#cv">Mon CV</a></p>
 						<p><a href="/blog">Blog</a></p>
 						<p><a href="/#contact">Contact</a></p>
-						<p><a href="/signin">Se connecter</a></p>
+						{% if sessionUser is not null %}
+							{% if sessionUser.isAdmin == TRUE %}
+								<p><a href="/dashboard">Tableau de bord</a></p>
+							{% endif %}
+							<p><a href="/logout">Se déconnecter</a></p>
+						{% else %}
+							<p><a href="/signin">Se connecter</a></p>
+						{% endif %}
 					</div>
 				</div>
 				<div class="copyright">
