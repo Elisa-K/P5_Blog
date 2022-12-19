@@ -419,7 +419,7 @@ h4::before {
 }
 
 .post-img {
-  width: 100%;
+  /* width: 100%; */
   overflow: hidden;
   margin-bottom: 20px;
   border-radius: 0px 80px 0px 80px;
@@ -557,8 +557,8 @@ ul.list-in-text li:before {
 }
 
 .all-posts .post-item .post-img {
-  width: 100%;
-  height: auto;
+  /* width: 100%;
+  height: auto; */
   overflow: hidden;
 }
 
@@ -941,8 +941,8 @@ footer .footer-wrap .newsletter #subscribe button {
   }
 
   .all-posts .post-item .post-img {
-    width: 300px;
-    height: 300px;
+    /* width: 300px;
+    height: 300px; */
     overflow: hidden;
     margin-right: 20px;
   }

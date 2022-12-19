@@ -8,12 +8,12 @@ use Lib\Services\SessionManager;
 
 class TokenManager
 {
-    private int $lifetime = 5;
+    private int $lifetime = 60;
     private SessionManager $session;
 
-    public function __construct()
+    public function __construct(SessionManager $session)
     {
-        $this->session = new SessionManager();
+        $this->session = $session;
     }
 
     public function generate(): string

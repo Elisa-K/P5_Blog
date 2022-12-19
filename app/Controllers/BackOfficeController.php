@@ -78,7 +78,7 @@ class BackOfficeController extends Controller
 
             if ($postForm->isValid()) {
                 $featuredImg = $post->featuredImg;
-                if ($postForm->data['featuredImg']) {
+                if (array_key_exists('featuredImg', $postForm->data)) {
                     $fileManager = new FileManager();
                     $featuredImg = $fileManager->saveImg($postForm->data['featuredImg']);
                     $fileManager->deleteImg($post->featuredImg);

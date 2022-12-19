@@ -10,11 +10,11 @@
 			<div class="all-posts">
 				{% for post in posts %}
 					<div class="post-item">
-						<div class="post-img">
-							<img src="/public/assets/featured-img/{{ post.featuredImg }}" alt="">
+						<div class="post-img col-12 col-lg-4">
+							<img class="img-fluid" src="/public/assets/featured-img/{{ post.featuredImg }}" alt="">
 						</div>
-						<div class="post-main-info">
-							<h4>{{ post.title }}</h4>						
+						<div class="post-main-info col-12 col-lg-8">
+							<h4>{{ post.title }}</h4>
 							<div class="post-meta">
 								<span>
 									<i class="far fa-user"></i>
@@ -27,18 +27,18 @@
 								{% if post.updatedAt is not null %}
 									<span>
 										<i class="fa-solid fa-pen"></i>
-										{{ post.updatedAt }}				
+										{{ post.updatedAt }}
 									</span>
 								{% endif %}
 								<span>
-									<i class="far fa-comment-alt"></i> 
+									<i class="far fa-comment-alt"></i>
 									{{ post.nbComment }} {% if post.nbComment > 1 %}commentaires{% else %}commentaire{% endif %}
 								</span>
 							</div>
 							<p>{{ post.excerpt }}</p>
 							<a href="/blog/post/{{post.id}}" class="btn-fill">Lire plus</a>
 						</div>
-					</div>			
+					</div>
 				{% endfor %}
 			</div>
 			<nav aria-label="blog navigation">
@@ -63,7 +63,7 @@
 				  {% endfor %}
           </ul>
         </nav>
-		</div>		
+		</div>
 	</div>
 
 {% endblock %}

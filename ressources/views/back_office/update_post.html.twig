@@ -10,8 +10,8 @@
 {% block content %}
 	<div class="row page-titles">
 		<div class="col-md-12 align-self-center">
-				<h3 class="text-themecolor text-center">Mettre à jour l'article</h3>				
-		</div>		
+			<h3 class="text-themecolor text-center">Mettre à jour l'article</h3>
+		</div>
 	</div>
 	{% include 'back_office/form_post.html.twig' with {'action': 'update'} %}
 {% endblock %}
@@ -20,7 +20,7 @@
 	<script src="/public/assets/back-office/js/formPost.js"></script>
 	{% if post.content is defined %}
 		<script>
-		setTimeout(() => {tinymce.get('content-tiny').setContent('{{ post.content | raw }}')},500);			
+		setTimeout(() => {tinymce.get('content-tiny').setContent(`{{ post.content | raw }}`)},500);
 		</script>
 	{% endif %}
 {% endblock %}

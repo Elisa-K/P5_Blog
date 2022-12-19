@@ -12,7 +12,7 @@ use Lib\Exceptions\{AccessDeniedException, UnauthorizedException};
 
 class Controller
 {
-    private ?PDO $dbConnect;
+    private ? PDO $dbConnect;
     protected SessionManager $session;
     private FlashMessage $flashMessage;
     private TokenManager $tokenManager;
@@ -27,10 +27,10 @@ class Controller
             $this->session->set('messages', array());
         }
         $this->flashMessage = new FlashMessage($_SESSION['messages']);
-        $this->tokenManager = new TokenManager();
+        $this->tokenManager = new TokenManager($this->session);
     }
 
-    public function getDatabase(): ?PDO
+    public function getDatabase(): ? PDO
     {
         return $this->dbConnect;
     }
